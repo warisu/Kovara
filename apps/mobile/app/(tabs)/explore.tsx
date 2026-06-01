@@ -5,6 +5,8 @@ import { useRouter } from "expo-router";
 import { PoolRow, PoolSearchResult } from "../../components/PoolRow";
 import { ProfileRow, ProfileSearchResult } from "../../components/ProfileRow";
 import { SearchBar } from "../../components/SearchBar";
+import { EmptyState } from "../../components/states/EmptyState";
+import { ErrorState } from "../../components/states/ErrorState";
 
 const DEBOUNCE_MS = 300;
 
@@ -96,6 +98,7 @@ export default function ExploreScreen() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchNonce, setSearchNonce] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -134,7 +137,7 @@ export default function ExploreScreen() {
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery]);
+  }, [debouncedQuery, searchNonce]);
 
   const hasQuery = debouncedQuery.trim().length > 0;
   const hasResults = results.profiles.length > 0 || results.pools.length > 0;
@@ -158,20 +161,24 @@ export default function ExploreScreen() {
             <Text style={styles.muted}>Searching...</Text>
           </View>
         ) : error ? (
-          <View style={styles.center}>
-            <Text style={styles.errorTitle}>Search unavailable</Text>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
+          <ErrorState message={error} onRetry={() => setSearchNonce((current) => current + 1)} />
         ) : !hasQuery ? (
-          <View style={styles.center}>
-            <Text style={styles.emptyTitle}>Search Linkora</Text>
-            <Text style={styles.emptyText}>Find creators and community pools.</Text>
-          </View>
+          <EmptyState
+            icon="🔎"
+            title="Search Linkora"
+            subtitle="Find creators and community pools."
+          />
         ) : !hasResults ? (
-          <View style={styles.center}>
-            <Text style={styles.emptyTitle}>No matches</Text>
-            <Text style={styles.emptyText}>Try another username, token, or pool name.</Text>
-          </View>
+          <EmptyState
+            icon="🧭"
+            title="No matches"
+            subtitle="Try another username, token, or pool name."
+            actionLabel="Clear search"
+            onAction={() => {
+              setQuery("");
+              setSearchNonce((current) => current + 1);
+            }}
+          />
         ) : (
           <>
             <Text style={styles.summary}>{resultSummary}</Text>
@@ -238,28 +245,6 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     fontSize: 13,
     marginTop: 10,
-  },
-  emptyTitle: {
-    color: "#f8fafc",
-    fontSize: 18,
-    fontWeight: "800",
-    marginBottom: 6,
-  },
-  emptyText: {
-    color: "#94a3b8",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  errorTitle: {
-    color: "#fecaca",
-    fontSize: 18,
-    fontWeight: "800",
-    marginBottom: 6,
-  },
-  errorText: {
-    color: "#fca5a5",
-    fontSize: 14,
-    textAlign: "center",
   },
   summary: {
     color: "#64748b",

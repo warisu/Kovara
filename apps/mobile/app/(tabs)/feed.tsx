@@ -1,6 +1,9 @@
 import React from "react";
-import { FlatList, View, Text, StyleSheet, ActivityIndicator, RefreshControl } from "react-native";
+import { FlatList, Text, StyleSheet, ActivityIndicator, RefreshControl, View } from "react-native";
+import { useRouter } from "expo-router";
 import { PostCard, PostCardSkeleton, Post } from "../../components/PostCard";
+import { EmptyState } from "../../components/states/EmptyState";
+import { ErrorState } from "../../components/states/ErrorState";
 import { useFeed } from "../../hooks/useFeed";
 
 const SKELETON_COUNT = 4;
@@ -15,25 +18,8 @@ function SkeletonList() {
   );
 }
 
-function EmptyState() {
-  return (
-    <View style={styles.center}>
-      <Text style={styles.emptyIcon}>📭</Text>
-      <Text style={styles.emptyTitle}>No posts yet</Text>
-      <Text style={styles.emptySubtitle}>Be the first to post on Linkora!</Text>
-    </View>
-  );
-}
-
-function ErrorState({ message }: { message: string }) {
-  return (
-    <View style={styles.center}>
-      <Text style={styles.errorText}>{message}</Text>
-    </View>
-  );
-}
-
 export default function FeedScreen() {
+  const router = useRouter();
   const { posts, loading, error, loadMore, refresh } = useFeed();
 
   const isInitialLoad = loading && posts.length === 0;
@@ -47,7 +33,7 @@ export default function FeedScreen() {
   }
 
   if (error && posts.length === 0) {
-    return <ErrorState message={error} />;
+    return <ErrorState message={error} onRetry={refresh} />;
   }
 
   return (
@@ -57,7 +43,15 @@ export default function FeedScreen() {
       data={posts}
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => <PostCard post={item} />}
-      ListEmptyComponent={<EmptyState />}
+      ListEmptyComponent={
+        <EmptyState
+          icon="📭"
+          title="No posts yet"
+          subtitle="Be the first to post on Linkora."
+          actionLabel="Explore creators"
+          onAction={() => router.push("/(tabs)/explore" as Parameters<typeof router.push>[0])}
+        />
+      }
       ListFooterComponent={
         loading && posts.length > 0 ? (
           <ActivityIndicator style={styles.footer} color="#6366f1" size="small" />
@@ -94,26 +88,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 32,
-  },
-  emptyIcon: {
-    fontSize: 48,
-    marginBottom: 12,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#f1f5f9",
-    marginBottom: 6,
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    color: "#64748b",
-    textAlign: "center",
-  },
-  errorText: {
-    color: "#f87171",
-    fontSize: 14,
-    textAlign: "center",
   },
   footer: {
     paddingVertical: 16,
