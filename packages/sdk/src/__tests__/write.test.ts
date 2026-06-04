@@ -1,4 +1,4 @@
-import { LinkoraClient } from "../client";
+import { KovaraClient } from "../client";
 
 const mockCall = jest.fn();
 const mockBuild = jest.fn();
@@ -36,12 +36,12 @@ jest.mock("@stellar/stellar-sdk", () => ({
   xdr: {},
 }));
 
-describe("LinkoraClient write methods", () => {
-  let client: LinkoraClient;
+describe("KovaraClient write methods", () => {
+  let client: KovaraClient;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    client = new LinkoraClient({
+    client = new KovaraClient({
       contractId: "CDUMMYCONTRACTXXXXXXXXXXXXXXXXXXXXXXXXXXX",
       rpcUrl: "https://dummy-rpc.example.com",
     });

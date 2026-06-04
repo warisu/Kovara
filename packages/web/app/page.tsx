@@ -15,8 +15,7 @@ function StateIcon() {
         height: 56,
         borderRadius: 999,
         border: "1px solid #2f3d67",
-        background:
-          "radial-gradient(circle at 30% 30%, #3a4f82 0%, #111a31 60%, #0a1023 100%)",
+        background: "radial-gradient(circle at 30% 30%, #3a4f82 0%, #111a31 60%, #0a1023 100%)",
         display: "grid",
         placeItems: "center",
         flexShrink: 0,
@@ -211,14 +210,22 @@ export default function Page() {
           "radial-gradient(circle at top, #162753 0%, rgba(9, 16, 34, 0.95) 35%, #070b17 80%)",
       }}
     >
-      <section style={{ maxWidth: 1120, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
+      <section
+        style={{
+          maxWidth: 1120,
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+        }}
+      >
         <header style={sectionHeaderStyle}>
           <h1 style={{ margin: 0, fontSize: "clamp(1.5rem, 2.8vw, 2.3rem)" }}>
-            Linkora State System
+            Kovara State System
           </h1>
           <p style={sectionSubtextStyle}>
-            Designed for consistent empty states, loading skeletons, 404 cases, RPC failures,
-            and wallet-auth gated views across desktop and mobile.
+            Designed for consistent empty states, loading skeletons, 404 cases, RPC failures, and
+            wallet-auth gated views across desktop and mobile.
           </p>
         </header>
 
@@ -298,7 +305,7 @@ export default function Page() {
             <StateCard
               label="Network / RPC"
               title="Cannot reach RPC endpoint"
-              copy="Linkora cannot sync with Stellar right now. Please retry or switch endpoint."
+              copy="Kovara cannot sync with Stellar right now. Please retry or switch endpoint."
               action="Retry connection"
             />
             <StateCard

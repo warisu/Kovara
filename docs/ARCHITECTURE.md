@@ -1,6 +1,6 @@
-# Linkora-Social Architecture
+# Kovara Architecture
 
-This document describes the high-level architecture of Linkora-Social, a decentralized social finance platform built on Stellar with Soroban smart contracts.
+This document describes the high-level architecture of Kovara, a decentralized social finance platform built on Stellar with Soroban smart contracts.
 
 ## System Overview
 
@@ -9,22 +9,22 @@ graph TB
     WEB["🌐 Web Application<br/>packages/web"]
     MOBILE["📱 Mobile App<br/>Future"]
     MINIAPP["⚙️ Mini Apps Host<br/>Future"]
-    
+
     SDK["📦 SDK<br/>packages/sdk"]
     RPC["🔗 Stellar RPC<br/>Testnet/Mainnet"]
-    
+
     CONTRACT["📋 Smart Contracts<br/>packages/contracts"]
     INDEXER["🔍 Indexer Service<br/>Future"]
-    
+
     WEB -->|Uses| SDK
     MOBILE -->|Uses| SDK
     MINIAPP -->|Uses| SDK
-    
+
     SDK -->|Calls| CONTRACT
     SDK -->|Connects to| RPC
     CONTRACT -->|Emits Events| INDEXER
     INDEXER -->|Indexes Data| RPC
-    
+
     style WEB fill:#e1f5ff
     style MOBILE fill:#e1f5ff
     style MINIAPP fill:#e1f5ff
@@ -39,6 +39,7 @@ graph TB
 ### 1. Frontend Layer
 
 #### Web Application (`packages/web`)
+
 - **Framework**: Next.js 14 with React 18
 - **Type Safety**: TypeScript
 - **Styling**: CSS Modules
@@ -46,6 +47,7 @@ graph TB
 - **Testing**: Playwright for E2E, Jest for unit tests
 
 **Key Pages:**
+
 - `/` - Landing/Home feed
 - `/explore` - Discovery page
 - `/post/[id]` - Single post view
@@ -54,6 +56,7 @@ graph TB
 - `/new` - Create new post
 
 **Core Components:**
+
 - `WalletProvider` - Context-based wallet state management via `useWallet()` hook
 - `Feed` - Post feed component with pagination
 - `PostCard` - Individual post display
@@ -61,6 +64,7 @@ graph TB
 - `CreatePost` - Post composition interface
 
 **Custom Hooks:**
+
 - `useWallet()` - Wallet state: connection, balance, address
 - `useFeed()` / `useFollowingFeed()` - Feed data fetching and pagination
 - `usePoolContract()` - Community pool interactions
@@ -69,13 +73,15 @@ graph TB
 ### 2. Backend Layer
 
 #### Soroban Smart Contracts (`packages/contracts`)
+
 - **Language**: Rust with `soroban-sdk`
 - **Build System**: Cargo workspace
 - **Test Coverage**: Unit tests in `test.rs`
 
-**Primary Contract: `LinkoraContract`**
+**Primary Contract: `KovaraContract`**
 
 **Core Features:**
+
 - **Profiles**: Register and update creator profiles with username and token address
 - **Follow Graph**: Track following/followers with pagination support (50 per page max)
 - **Posts**: Create, delete, and like posts with metadata storage
@@ -84,6 +90,7 @@ graph TB
 - **Blocking**: Block/unblock users and prevent blocked users from following
 
 **Key Functions:**
+
 ```
 Profile Management:
   - set_profile(user, username, creator_token)
@@ -118,6 +125,7 @@ Pools:
 ```
 
 #### SDK (`packages/sdk`)
+
 - **Purpose**: Typed client library for contract interaction
 - **Type Safety**: TypeScript type definitions
 - **Contract Bindings**: Generated from contract interface
@@ -134,7 +142,7 @@ sequenceDiagram
     participant SDK as SDK
     participant RPC as Stellar RPC
     participant Contract as Soroban Contract
-    
+
     User->>Web: Click "Create Post"
     Web->>Web: Collect post content
     User->>Web: Sign transaction (Freighter)
@@ -157,7 +165,7 @@ sequenceDiagram
     participant TokenContract as Token Contract
     participant RPC as Stellar RPC
     participant SocialContract as Social Contract
-    
+
     User->>Web: Click "Tip" button
     Web->>SDK: call tip(postId, amount, token)
     SDK->>RPC: 1. Approve token transfer
@@ -187,24 +195,29 @@ sequenceDiagram
 ## Technology Choices and Rationale
 
 ### Smart Contracts: Soroban (Rust)
+
 - **Why**: Native Stellar integration, type-safe, high performance
 - **Trade-off**: Learning curve, but excellent for financial contracts
 
 ### Frontend: Next.js
+
 - **Why**: React ecosystem, built-in SSR, excellent TypeScript support, edge deployment
 - **Alternative Considered**: Vue, but React has larger ecosystem
 
 ### Wallet Integration: Freighter API
+
 - **Why**: Official Stellar wallet for browser, seamless UX
 - **Limitation**: Browser-only (desktop, mobile web via browser)
 
 ### Testing: Playwright + Jest
+
 - **Why**: Playwright for realistic browser testing, Jest for unit tests
 - **Note**: Unit test infrastructure currently minimal; expanding with Issues #349
 
 ## Deployment Topology
 
 ### Testnet Environment
+
 ```
 +-----------+         +----------+
 | Web App   | ------> | Stellar  |
@@ -218,6 +231,7 @@ sequenceDiagram
 ```
 
 ### Mainnet Environment (Future)
+
 ```
 +-----------+         +----------+
 | Web App   | ------> | Stellar  |
@@ -233,6 +247,7 @@ sequenceDiagram
 ## Development Workflow
 
 ### Local Development
+
 ```bash
 # Install dependencies
 pnpm install
@@ -250,14 +265,17 @@ pnpm -C packages/web test:e2e
 ### Testing Strategy
 
 **Unit Tests:**
+
 - Contract logic via Soroban test framework
 - Web hooks and utilities via Jest
 
 **Integration Tests:**
+
 - E2E tests via Playwright (wallet connection, transactions)
 - Contract interaction via SDK
 
 **Deployment Verification:**
+
 - Contract deployment to Testnet
 - Web app deployed to Vercel
 - E2E test suite runs against Testnet
@@ -265,21 +283,25 @@ pnpm -C packages/web test:e2e
 ## Key Architectural Decisions
 
 ### 1. Paginated Follow Graph
+
 - **Decision**: Limit to 50 items per page
 - **Reason**: Prevent DoS via large data requests
 - **Cost**: Slightly more complex client logic
 
 ### 2. Protocol Fee Split
+
 - **Decision**: Fee split between author and treasury on tips
 - **Reason**: Sustainable project funding while rewarding creators
 - **Implementation**: Configurable fee percentage (0-10,000 basis points)
 
 ### 3. M-of-N Pool Admin Model
+
 - **Decision**: Multi-signature required for pool withdrawals
 - **Reason**: Security and decentralized pool governance
 - **Tradeoff**: Slightly increased UX complexity
 
 ### 4. SEP-41 Token Support
+
 - **Decision**: All tipping and pools use standard token contracts
 - **Reason**: Composability and ecosystem interoperability
 - **Limitation**: Requires users to manage token balances
@@ -287,18 +309,21 @@ pnpm -C packages/web test:e2e
 ## Security Considerations
 
 ### Smart Contract Security
+
 - **Input Validation**: All parameters validated before state changes
 - **Access Control**: Signer checks on sensitive operations
 - **Error Handling**: Clear error messages for debugging
 - **Testing**: Unit test coverage of core flows
 
 ### Web Application Security
+
 - **CSP Headers**: Content Security Policy to mitigate XSS
 - **Input Sanitization**: Post content checked for length (1-280 chars)
 - **Wallet Integration**: Freighter handles key management securely
 - **HTTPS Only**: All communication encrypted in production
 
 ### Recommended Security Enhancements
+
 - Formal contract audits before mainnet deployment
 - Rate limiting on sensitive endpoints
 - CAPTCHA for post creation to prevent spam
@@ -307,11 +332,13 @@ pnpm -C packages/web test:e2e
 ## Performance Considerations
 
 ### Scalability
+
 - **Pagination**: 50-item pages prevent large transfers
 - **Event Indexing**: Offloads read operations to indexer service
 - **Client-Side Caching**: Hook state prevents redundant queries
 
 ### Optimization Opportunities
+
 - Implement feed caching strategy
 - Use Stellar soroban event filtering for efficient indexing
 - Consider CDN for static assets

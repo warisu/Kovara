@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported |
-|---------|-----------|
-| 0.1.x (current) | ✅ Yes |
+| Version         | Supported |
+| --------------- | --------- |
+| 0.1.x (current) | ✅ Yes    |
 
 Security fixes are applied to the latest version only. This project is in prototype stage and has not been audited for production use.
 
@@ -12,9 +12,10 @@ Security fixes are applied to the latest version only. This project is in protot
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Use **[GitHub Security Advisories](https://github.com/Epta-Node/Linkora-social/security/advisories/new)** to report privately. This keeps the disclosure confidential until a fix is ready.
+Use **[GitHub Security Advisories](https://github.com/Epta-Node/Kovara/security/advisories/new)** to report privately. This keeps the disclosure confidential until a fix is ready.
 
 Include in your report:
+
 - Affected function(s) or file(s)
 - Steps to reproduce or proof of concept
 - Impact assessment (e.g. fund loss, access control bypass, DoS)
@@ -22,12 +23,12 @@ Include in your report:
 
 ## Response Timeline
 
-| Milestone | Target |
-|-----------|--------|
-| Acknowledgement | Within 48 hours |
-| Triage & severity classification | Within 7 days |
-| Fix for **Critical** vulnerabilities | Within 14 days |
-| Fix for **High** vulnerabilities | Within 30 days |
+| Milestone                                | Target                 |
+| ---------------------------------------- | ---------------------- |
+| Acknowledgement                          | Within 48 hours        |
+| Triage & severity classification         | Within 7 days          |
+| Fix for **Critical** vulnerabilities     | Within 14 days         |
+| Fix for **High** vulnerabilities         | Within 30 days         |
 | Fix for **Medium / Low** vulnerabilities | Next scheduled release |
 
 We will keep you informed throughout the process and coordinate disclosure timing with you before publishing a security advisory.

@@ -8,9 +8,9 @@ const DEFAULT_APPS: MiniApp[] = [
   {
     id: "tip-jar",
     name: "Tip Jar",
-    description: "Tip any Linkora post with XLM using your connected wallet.",
+    description: "Tip any Kovara post with XLM using your connected wallet.",
     icon: "",
-    entry: "https://linkora-social.github.io/mini-apps/tip-jar/index.html",
+    entry: "https://Kovara.github.io/mini-apps/tip-jar/index.html",
     permissions: ["wallet.getAddress", "wallet.signTransaction"],
   },
   {
@@ -18,7 +18,7 @@ const DEFAULT_APPS: MiniApp[] = [
     name: "Poll Maker",
     description: "Create and vote on polls in your community.",
     icon: "",
-    entry: "https://linkora-social.github.io/mini-apps/poll-maker/index.html",
+    entry: "https://Kovara.github.io/mini-apps/poll-maker/index.html",
     permissions: ["wallet.getAddress"],
   },
 ];
@@ -30,7 +30,7 @@ const AVAILABLE_APPS: MiniApp[] = [
     name: "Mini Gallery",
     description: "Showcase your NFT collection in a beautiful grid.",
     icon: "",
-    entry: "https://linkora-social.github.io/mini-apps/mini-gallery/index.html",
+    entry: "https://Kovara.github.io/mini-apps/mini-gallery/index.html",
     permissions: ["wallet.getAddress"],
   },
   {
@@ -38,7 +38,7 @@ const AVAILABLE_APPS: MiniApp[] = [
     name: "Event Brite",
     description: "Discover and RSVP to community events.",
     icon: "",
-    entry: "https://linkora-social.github.io/mini-apps/event-brite/index.html",
+    entry: "https://Kovara.github.io/mini-apps/event-brite/index.html",
     permissions: ["wallet.getAddress", "wallet.signTransaction"],
   },
 ];
@@ -72,14 +72,11 @@ export function useInstalledApps() {
     setApps(updated);
   }, []);
 
-  const isInstalled = useCallback(
-    (appId: string) => apps.some((a) => a.id === appId),
-    [apps],
-  );
+  const isInstalled = useCallback((appId: string) => apps.some((a) => a.id === appId), [apps]);
 
   const discoverable = useMemo(
     () => AVAILABLE_APPS.filter((app) => !isInstalled(app.id)),
-    [isInstalled],
+    [isInstalled]
   );
 
   return { apps, loaded, install, uninstall, isInstalled, discoverable };

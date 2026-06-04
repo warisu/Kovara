@@ -1,313 +1,321 @@
-# Linkora Mobile Developer Guide
+# @kovara/atlas — Mobile App
 
-This guide walks a developer unfamiliar with Expo through setting up the local environment, running the Linkora mobile app, and contributing new features.
+> The Kōvara contributor app and index explorer. Submit local prices, verify peers, track your XLM and USDC earnings, and browse the daily KVI — all from your phone, powered by your Stellar wallet.
 
-All shell commands have been verified on **Ubuntu 22.04** and **macOS 14 (Sonoma)**.
-
----
-
-## Table of Contents
-
-1. [Prerequisites](#prerequisites)
-2. [Environment Setup](#environment-setup)
-3. [Running on Android and iOS Simulators](#running-on-android-and-ios-simulators)
-4. [Project Structure](#project-structure)
-5. [Adding a New Screen](#adding-a-new-screen)
-6. [Connecting to the Contract via the SDK](#connecting-to-the-contract-via-the-sdk)
-7. [Running Tests](#running-tests)
-8. [Building with EAS](#building-with-eas)
+[![React Native](https://img.shields.io/badge/React%20Native-0.74-61DAFB)](https://reactnative.dev)
+[![Expo](https://img.shields.io/badge/Expo-51-000020)](https://expo.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6)](https://www.typescriptlang.org)
+[![Stellar SDK](https://img.shields.io/badge/@stellar%2Fstellar--sdk-12.x-7B2FBE)](https://github.com/stellar/js-stellar-sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
 
 ---
 
-## Prerequisites
+## Overview
 
-| Tool | Minimum version | Install |
-|------|----------------|---------|
-| Node.js | 18 | https://nodejs.org |
-| pnpm | 9 | `npm install -g pnpm@9` |
-| Expo CLI | latest | `npm install -g expo-cli` |
-| EAS CLI | latest | `npm install -g eas-cli` |
-| Watchman (macOS) | latest | `brew install watchman` |
+Atlas is the primary user-facing app for the Kōvara network. It is designed to work on low-end Android devices with intermittent connectivity — a deliberate choice to maximise participation from contributors in the Global South where cost-of-living data is most needed and least available.
 
-**For Android:**
-- Android Studio (includes Android SDK and emulator)
-- Set `ANDROID_HOME` to your SDK path, e.g.:
-  ```bash
-  export ANDROID_HOME=$HOME/Android/Sdk
-  export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
-  ```
-
-**For iOS (macOS only):**
-- Xcode 15+ (install from the Mac App Store)
-- Xcode Command Line Tools: `xcode-select --install`
-- CocoaPods: `sudo gem install cocoapods`
+**Core flows:**
+- Connect a Stellar wallet (LOBSTR, Freighter mobile, or xBull)
+- Submit a local price for any basket item in under 30 seconds
+- Verify peer submissions and earn USDC for correct votes
+- Track cumulative XLM + USDC earnings with a full transaction history
+- Explore the live KVI map by country and drill into basket breakdowns
 
 ---
 
-## Environment Setup
+## Directory Structure
 
-### 1. Clone and install dependencies
-
-```bash
-git clone https://github.com/Epta-Node/Linkora-social.git
-cd Linkora-social
-pnpm install
 ```
-
-### 2. Configure environment variables
-
-Copy the example env file inside the mobile app:
-
-```bash
-cp apps/mobile/.env.example apps/mobile/.env
-```
-
-Edit `apps/mobile/.env` and fill in the required values:
-
-```env
-# Deployed Linkora contract address on Stellar Testnet
-EXPO_PUBLIC_CONTRACT_ID=C...
-
-# Stellar RPC endpoint
-EXPO_PUBLIC_RPC_URL=https://soroban-testnet.stellar.org
-
-# Stellar network passphrase
-EXPO_PUBLIC_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-```
-
-> All `EXPO_PUBLIC_*` variables are bundled into the app and are readable by client-side code. Do not put secrets here.
-
-### 3. Install CocoaPods (iOS only)
-
-```bash
-cd apps/mobile/ios && pod install && cd -
+packages/atlas/
+├── app/
+│   ├── (tabs)/
+│   │   ├── index.tsx           # Home — live KVI map
+│   │   ├── submit.tsx          # Price submission flow
+│   │   ├── verify.tsx          # Peer verification queue
+│   │   └── rewards.tsx         # Earnings dashboard
+│   ├── country/
+│   │   └── [iso].tsx           # Country detail page
+│   ├── onboarding/
+│   │   ├── welcome.tsx
+│   │   └── connect-wallet.tsx
+│   └── _layout.tsx             # Root layout + auth guard
+├── components/
+│   ├── KviMap/                 # Global choropleth map
+│   ├── PriceForm/              # Submission wizard (multi-step)
+│   ├── VerifyCard/             # Single verification item
+│   ├── RewardsTicker/          # Live earnings counter
+│   ├── BasketBreakdown/        # Category bar chart
+│   └── WalletBadge/            # Connected wallet indicator
+├── lib/
+│   ├── stellar.ts              # Wallet connection + signing
+│   ├── api.ts                  # @kovara/api REST client
+│   ├── contracts.ts            # Soroban contract clients
+│   ├── storage.ts              # AsyncStorage helpers
+│   └── format.ts               # Currency + number formatters
+├── hooks/
+│   ├── useWallet.ts            # Wallet state + session
+│   ├── useKvi.ts               # KVI data fetching
+│   ├── useSubmit.ts            # Submission flow logic
+│   └── useRewards.ts           # Earnings polling
+├── store/
+│   └── index.ts                # Zustand global store
+├── assets/
+│   ├── fonts/
+│   └── icons/
+├── app.json
+├── eas.json                    # Expo Application Services config
+├── .env.example
+├── package.json
+└── README.md                   ← you are here
 ```
 
 ---
 
-## Running on Android and iOS Simulators
+## Screens
 
-### Android
+### Home — KVI Map
 
-1. Open Android Studio → **Device Manager** → start an emulator (API 33+ recommended).
-2. Verify the emulator is running:
-   ```bash
-   adb devices
-   ```
-3. From the project root:
-   ```bash
-   pnpm --filter mobile run android
-   ```
+The landing screen shows a world map shaded by KVI score (purchasing power). Tap any country to open its detail page.
 
-### iOS (macOS only)
+- Choropleth map via `react-native-maps` + GeoJSON overlay
+- Colour scale: dark purple (low purchasing power) → teal (high)
+- Bottom sheet: top 5 countries by today's KVI score
+- Refreshes every 5 minutes in the background
 
-1. Open Xcode → **Open Simulator** (or run `open -a Simulator`).
-2. From the project root:
-   ```bash
-   pnpm --filter mobile run ios
-   ```
+### Submit — Price Entry Flow
 
-### Expo Go (quick iteration)
+A guided 4-step wizard that keeps the submission time under 30 seconds:
 
-For rapid prototyping without a native build, use Expo Go:
-
-```bash
-pnpm --filter mobile start
+```
+Step 1 → Select category       (Food / Rent / Transport / Utilities / Healthcare)
+Step 2 → Select item           (e.g. Bread loaf, 1BR city centre)
+Step 3 → Enter price + currency (auto-detects local currency from device locale)
+Step 4 → Confirm + sign tx     (wallet signs the Soroban transaction)
 ```
 
-Scan the QR code in the terminal with the **Expo Go** app on your physical device.
+- Offline-first: submissions drafted locally and queued for when connectivity returns
+- Camera shortcut on Step 3 for scanning a receipt (OCR via Google ML Kit)
+- Shows estimated XLM reward before confirmation
 
-> Note: screens that use native modules (e.g. secure storage) require a development build, not Expo Go.
+### Verify — Peer Queue
+
+Lists open submissions from other contributors awaiting peer verification. Each card shows:
+- Item, country, and submitted price
+- A map pin of the submitter's general region (not exact location)
+- Approve / Reject buttons
+- Estimated USDC reward for a correct vote
+
+Verifiers see only submissions from countries they have opted into. Swipe left to skip, swipe right to open the full verification card.
+
+### Rewards — Earnings Dashboard
+
+Displays cumulative and per-session earnings with a full breakdown:
+
+- Total XLM earned (from submissions)
+- Total USDC earned (from verifications)
+- Daily earnings sparkline (last 30 days)
+- Transaction history (links to Stellar Expert)
+- Withdraw / send buttons (opens native Stellar wallet)
+
+### Country Detail
+
+Drill into any country's KVI history:
+
+- 90-day KVI score line chart
+- Basket breakdown by category (bar chart)
+- Recent verified submissions table
+- Top contributors in that country
 
 ---
 
-## Project Structure
+## Wallet Integration
 
-```
-apps/mobile/
-├── app/                  # Expo Router file-based routes
-│   ├── (tabs)/           # Bottom-tab navigator screens
-│   │   ├── index.tsx     # Feed screen
-│   │   ├── profile.tsx   # Profile screen
-│   │   └── explore.tsx   # Explore / search screen
-│   ├── post/[id].tsx     # Dynamic post detail screen
-│   └── _layout.tsx       # Root layout (providers, fonts, theme)
-├── components/           # Shared UI components
-│   ├── PostCard.tsx
-│   ├── ProfileAvatar.tsx
-│   └── WalletButton.tsx
-├── hooks/                # Custom React hooks
-│   ├── useWallet.ts      # Wallet connection state
-│   └── useFeed.ts        # Feed data fetching
-├── lib/                  # Utility helpers
-│   └── contract.ts       # Contract client singleton
-├── assets/               # Fonts, images, icons
-├── app.json              # Expo configuration
-└── eas.json              # EAS Build / Submit configuration
-```
+Atlas supports three Stellar wallet providers:
 
-Expo Router maps the file system directly to navigation routes. A file at `app/(tabs)/index.tsx` becomes the default tab screen. See the [Expo Router docs](https://docs.expo.dev/router/introduction/) for full reference.
+| Wallet | Method | Platform |
+|---|---|---|
+| LOBSTR | WalletConnect v2 | iOS + Android |
+| xBull | Deep link + callback | Android |
+| Freighter Mobile | WalletConnect v2 | iOS + Android |
 
----
+Wallet sessions are stored encrypted in `expo-secure-store`. The app never holds private keys — all transactions are signed inside the user's wallet app and returned via callback.
 
-## Adding a New Screen
+```typescript
+// lib/stellar.ts
 
-### Simple tab screen
+import { WalletConnectAllowedMethods } from '@lobstr-co/lobstr-wc'
 
-1. Create the file `apps/mobile/app/(tabs)/notifications.tsx`:
-
-```tsx
-import { View, Text, StyleSheet } from "react-native";
-
-export default function NotificationsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Notifications coming soon</Text>
-    </View>
-  );
+export async function connectWallet(): Promise<string> {
+  // Opens wallet selector bottom sheet
+  // Returns the user's public key on success
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", justifyContent: "center" },
-});
-```
-
-2. Register the tab in `apps/mobile/app/(tabs)/_layout.tsx` by adding a `<Tabs.Screen>` entry.
-
-### Modal / stack screen
-
-Create `apps/mobile/app/tip-modal.tsx`. Expo Router will automatically make it accessible via `router.push("/tip-modal")`.
-
----
-
-## Connecting to the Contract via the SDK
-
-The `packages/sdk` package exposes a typed client generated from the contract WASM.
-
-### Importing the client
-
-```ts
-import { Client } from "linkora-sdk";
-import { rpc } from "@stellar/stellar-sdk";
-
-const server = new rpc.Server(process.env.EXPO_PUBLIC_RPC_URL!);
-
-const client = new Client({
-  contractId: process.env.EXPO_PUBLIC_CONTRACT_ID!,
-  networkPassphrase: process.env.EXPO_PUBLIC_NETWORK_PASSPHRASE!,
-  rpcUrl: process.env.EXPO_PUBLIC_RPC_URL!,
-});
-```
-
-### Reading data (no wallet required)
-
-```ts
-const post = await client.get_post({ id: BigInt(1) });
-console.log(post.result);
-```
-
-### Writing data (requires wallet signature)
-
-Stellar Wallet Kit provides a universal wallet adapter for React Native. After the user connects their wallet and you have their `publicKey`, build and sign transactions using the SDK's `signAndSend` helper:
-
-```ts
-import { signTransaction } from "@stellar/freighter-api";
-
-const tx = await client.create_post({
-  author: publicKey,
-  content: "Hello Linkora!",
-});
-
-const signed = await signTransaction(tx.toXDR(), {
-  network: "TESTNET",
-  networkPassphrase: process.env.EXPO_PUBLIC_NETWORK_PASSPHRASE!,
-  accountToSign: publicKey,
-});
-
-await server.sendTransaction(signed);
+export async function signTransaction(xdr: string): Promise<string> {
+  // Sends XDR to the connected wallet for signing
+  // Returns the signed XDR
+}
 ```
 
 ---
 
-## Running Tests
+## Environment Variables
 
-### Unit tests
+```env
+# .env (copy from .env.example)
 
-```bash
-pnpm --filter mobile test
-```
+EXPO_PUBLIC_API_URL=https://api.kovara.io/v1
+EXPO_PUBLIC_GRAPHQL_URL=https://api.kovara.io/graphql
+EXPO_PUBLIC_STELLAR_NETWORK=testnet               # testnet | mainnet
+EXPO_PUBLIC_HORIZON_URL=https://horizon-testnet.stellar.org
 
-Tests live in `apps/mobile/__tests__/` and use Jest with the `jest-expo` preset.
+EXPO_PUBLIC_PRICE_VAULT_CONTRACT=GCPV...
+EXPO_PUBLIC_KOVARA_INDEX_CONTRACT=GCKI...
 
-### Snapshot tests
-
-```bash
-pnpm --filter mobile test -- --updateSnapshot
-```
-
-Review the diff in `apps/mobile/__tests__/__snapshots__/` before committing.
-
-### Type checking
-
-```bash
-pnpm --filter mobile tsc --noEmit
+EXPO_PUBLIC_WALLETCONNECT_PROJECT_ID=your_wc_project_id
+EXPO_PUBLIC_SENTRY_DSN=https://...               # Optional crash reporting
 ```
 
 ---
 
-## Building with EAS
+## Local Development
 
-[EAS Build](https://docs.expo.dev/build/introduction/) compiles the app in the cloud without requiring a local Android/iOS toolchain.
+### Prerequisites
 
-### First-time setup
+- Node.js ≥ 20
+- pnpm ≥ 9
+- Expo CLI: `npm install -g expo-cli`
+- iOS: Xcode 15+ (macOS only)
+- Android: Android Studio with an emulator or a physical device
+
+### Install & Run
 
 ```bash
+cd packages/atlas
+
+# Install dependencies
+pnpm install
+
+# Start the Expo dev server
+pnpm start
+
+# Run on Android
+pnpm android
+
+# Run on iOS
+pnpm ios
+```
+
+### Running Against Testnet
+
+Set `EXPO_PUBLIC_STELLAR_NETWORK=testnet` in your `.env` and use a funded Testnet wallet. Get test XLM from [Stellar Laboratory Friendbot](https://laboratory.stellar.org/#account-creator).
+
+---
+
+## Building for Production
+
+Atlas uses [Expo Application Services (EAS)](https://expo.dev/eas) for builds and OTA updates.
+
+```bash
+# Install EAS CLI
+npm install -g eas-cli
+
+# Log in to Expo
 eas login
-eas build:configure
-```
 
-This creates or updates `apps/mobile/eas.json`. Commit that file.
+# Build for Android (APK for testing)
+eas build --platform android --profile preview
 
-### Development build
-
-A development build embeds the Expo dev client and supports fast refresh with native modules.
-
-```bash
-# Android
-eas build --platform android --profile development
-
-# iOS
-eas build --platform ios --profile development
-```
-
-### Production build
-
-```bash
-# Android (produces an .aab for the Play Store)
+# Build for Android (AAB for Play Store)
 eas build --platform android --profile production
 
-# iOS (produces an .ipa for the App Store)
+# Build for iOS (IPA for App Store)
 eas build --platform ios --profile production
+
+# Push an OTA update (no store review needed)
+eas update --branch production --message "Fix price submission on Android 13"
 ```
 
-### Submitting to stores
-
-```bash
-# Google Play
-eas submit --platform android
-
-# Apple App Store
-eas submit --platform ios
-```
-
-Follow the prompts to supply store credentials. Store secrets in EAS environment variables rather than in the repository.
+Build profiles are defined in `eas.json`.
 
 ---
 
-## Further Reading
+## Offline Support
 
-- [Expo documentation](https://docs.expo.dev)
-- [EAS Build documentation](https://docs.expo.dev/build/introduction/)
-- [Stellar SDK for JavaScript](https://stellar.github.io/js-stellar-sdk/)
-- [Linkora SDK reference](../../packages/sdk/README.md)
-- [Linkora contract API](../../README.md#contract-api-reference)
+Atlas is designed to degrade gracefully with no or intermittent connectivity:
+
+| Feature | Offline behaviour |
+|---|---|
+| KVI map | Shows last cached snapshot (timestamp shown) |
+| Submit price | Drafts saved locally; queued for upload on reconnect |
+| Verify queue | Last fetched queue available; voting requires connectivity |
+| Rewards | Cached balance shown; live sync on reconnect |
+
+Offline queue is managed via `@tanstack/react-query` with `expo-sqlite` as the persistence layer.
+
+---
+
+## Key Dependencies
+
+| Package | Purpose |
+|---|---|
+| `expo` ~51 | Cross-platform runtime |
+| `expo-router` | File-based navigation |
+| `@stellar/stellar-sdk` | Stellar + Soroban transaction building |
+| `@walletconnect/modal-react-native` | WalletConnect v2 integration |
+| `@tanstack/react-query` | Data fetching, caching, sync |
+| `zustand` | Lightweight global state |
+| `react-native-maps` | KVI choropleth map |
+| `@shopify/flash-list` | High-performance verify queue list |
+| `expo-secure-store` | Encrypted wallet session storage |
+| `expo-sqlite` | Offline queue persistence |
+| `victory-native` | Earnings charts + basket breakdowns |
+| `react-native-vision-camera` | Receipt OCR (price entry shortcut) |
+| `@sentry/react-native` | Crash reporting |
+
+---
+
+## Testing
+
+```bash
+# Unit tests (Jest + Testing Library)
+pnpm test
+
+# Watch mode
+pnpm test:watch
+
+# E2E tests (Detox)
+pnpm test:e2e:android
+pnpm test:e2e:ios
+```
+
+E2E tests run against a local Testnet environment seeded with fixture data. See [docs/testing.md](../../docs/testing.md) for setup.
+
+---
+
+## Accessibility
+
+Atlas targets WCAG 2.1 AA compliance and is tested against:
+- Android TalkBack
+- iOS VoiceOver
+- Dynamic font sizes (system large text settings)
+
+All interactive elements have `accessibilityLabel` and `accessibilityRole` props. The KVI map includes a data table fallback for screen reader users.
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](../../CONTRIBUTING.md). For mobile-specific contributions:
+
+- Match existing component patterns in `components/`
+- Test on a real Android device — emulators miss WalletConnect deep link behaviour
+- Run `pnpm lint` and `pnpm test` before opening a PR
+- Include screenshots or screen recordings for UI changes
+
+Good first issues: [`label:good-first-issue label:mobile`](https://github.com/kovara-protocol/kovara/issues?q=label%3Agood-first-issue+label%3Amobile)
+
+---
+
+## License
+
+MIT © 2025 Kōvara Contributors

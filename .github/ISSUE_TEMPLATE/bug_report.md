@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible problem in Linkora Social
+about: Report a reproducible problem in Kovara Social
 title: "[Bug]: "
 labels: bug
 ---
@@ -11,9 +11,9 @@ Describe the bug clearly and concisely.
 
 ## Steps to Reproduce
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Expected Behavior
 

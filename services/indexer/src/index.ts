@@ -1,8 +1,8 @@
 /**
- * Linkora Indexer — entry point.
+ * Kovara Indexer — entry point.
  *
  * Connects to a Soroban RPC endpoint, streams contract events from the
- * Linkora contract, writes raw events to PostgreSQL, and dispatches each
+ * Kovara contract, writes raw events to PostgreSQL, and dispatches each
  * event to the appropriate typed handler.
  *
  * Environment variables (all required unless noted):
@@ -100,7 +100,7 @@ process.on("SIGINT", () => shutdown("SIGINT"));
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  console.log("[indexer] Starting Linkora indexer");
+  console.log("[indexer] Starting Kovara indexer");
   console.log(`[indexer] RPC:      ${STELLAR_RPC_URL}`);
   console.log(`[indexer] Contract: ${CONTRACT_ID}`);
   console.log(`[indexer] From ledger: ${START_LEDGER}`);

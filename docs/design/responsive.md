@@ -2,7 +2,7 @@
 
 ## Breakpoints
 
-Linkora uses a mobile-first responsive design approach with three primary breakpoints:
+Kovara uses a mobile-first responsive design approach with three primary breakpoints:
 
 - **Mobile**: < 640px (default)
 - **Tablet**: 640px - 1024px
@@ -234,11 +234,7 @@ Consistent spacing using CSS custom properties:
 ```html
 <img
   src="image-mobile.jpg"
-  srcset="
-    image-mobile.jpg   640w,
-    image-tablet.jpg  1024w,
-    image-desktop.jpg 1920w
-  "
+  srcset="image-mobile.jpg 640w, image-tablet.jpg 1024w, image-desktop.jpg 1920w"
   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 1200px"
   alt="Description"
 />

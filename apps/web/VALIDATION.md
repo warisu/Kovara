@@ -1,7 +1,7 @@
 # Web Form Validation
 
 This document describes the input validation and sanitisation strategy for all
-Linkora web forms.
+Kovara web forms.
 
 ---
 
@@ -11,13 +11,13 @@ All validators live in `src/lib/validate.ts` and are pure functions that return
 `{ valid: boolean; error?: string }`. They can be used in both client components
 and server actions.
 
-| Validator | Rules |
-|---|---|
-| `validatePostContent` | Non-empty after sanitisation; max 280 characters |
-| `validateUsername` | Alphanumeric + `_` only; 3–32 characters |
+| Validator                | Rules                                                 |
+| ------------------------ | ----------------------------------------------------- |
+| `validatePostContent`    | Non-empty after sanitisation; max 280 characters      |
+| `validateUsername`       | Alphanumeric + `_` only; 3–32 characters              |
 | `validateStellarAddress` | Starts with `G` or `C`; exactly 56 base-32 characters |
-| `validateAmount` | Numeric; greater than zero |
-| `validateSearchQuery` | Non-empty; max 200 characters |
+| `validateAmount`         | Numeric; greater than zero                            |
+| `validateSearchQuery`    | Non-empty; max 200 characters                         |
 
 ### Sanitisation
 
@@ -29,12 +29,12 @@ content to a contract call.
 
 ## Form Components
 
-| Component | Fields | Validators applied |
-|---|---|---|
-| `PostForm` | `content` | `sanitisePostContent`, `validatePostContent` |
+| Component     | Fields                     | Validators applied                           |
+| ------------- | -------------------------- | -------------------------------------------- |
+| `PostForm`    | `content`                  | `sanitisePostContent`, `validatePostContent` |
 | `ProfileForm` | `username`, `creatorToken` | `validateUsername`, `validateStellarAddress` |
-| `TipForm` | `tokenAddress`, `amount` | `validateStellarAddress`, `validateAmount` |
-| `SearchBar` | `query` | `validateSearchQuery` |
+| `TipForm`     | `tokenAddress`, `amount`   | `validateStellarAddress`, `validateAmount`   |
+| `SearchBar`   | `query`                    | `validateSearchQuery`                        |
 
 ---
 

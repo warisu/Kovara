@@ -14,9 +14,9 @@ fn setup_token(env: &Env, admin: &Address) -> Address {
     token_id.address()
 }
 
-fn setup_contract(env: &Env) -> (LinkoraContractClient<'_>, Address, Address) {
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(env, &contract_id);
+fn setup_contract(env: &Env) -> (KovaraContractClient<'_>, Address, Address) {
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(env, &contract_id);
     let admin = Address::generate(env);
     let treasury = Address::generate(env);
     client.initialize(&admin, &treasury, &0);
@@ -93,8 +93,8 @@ fn test_username_duplicate_rejected() {
 fn test_get_following_first_page() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let mut followees = soroban_sdk::vec![&env];
@@ -116,8 +116,8 @@ fn test_get_following_first_page() {
 fn test_get_following_second_page() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let mut followees = soroban_sdk::vec![&env];
@@ -139,8 +139,8 @@ fn test_get_following_second_page() {
 fn test_get_following_offset_beyond_end() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -156,8 +156,8 @@ fn test_get_following_offset_beyond_end() {
 fn test_get_following_limit_exceeds_maximum() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -172,8 +172,8 @@ fn test_get_following_limit_exceeds_maximum() {
 fn test_get_following_zero_limit() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -187,8 +187,8 @@ fn test_get_following_zero_limit() {
 fn test_get_posts_by_author_first_page() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
 
@@ -227,8 +227,8 @@ fn test_get_posts_by_author_first_page() {
 fn test_get_posts_by_author_second_page() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
 
@@ -267,8 +267,8 @@ fn test_get_posts_by_author_second_page() {
 fn test_get_posts_by_author_offset_beyond_end() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
 
@@ -283,8 +283,8 @@ fn test_get_posts_by_author_offset_beyond_end() {
 fn test_get_posts_by_author_limit_exceeds_maximum() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
 
@@ -297,8 +297,8 @@ fn test_get_posts_by_author_limit_exceeds_maximum() {
 fn test_get_posts_by_author_after_delete() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
 
@@ -339,8 +339,8 @@ fn test_tip_fee_split() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -372,8 +372,8 @@ fn test_tip_blocked_by_author() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -397,8 +397,8 @@ fn test_tip_after_unblock() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -428,8 +428,8 @@ fn test_tip_non_blocked_user() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -899,8 +899,8 @@ fn test_delete_post_non_existent() {
 fn test_initialize_stores_admin() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
 
@@ -915,8 +915,8 @@ fn test_initialize_stores_admin() {
 fn test_initialize_twice_panics() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
 
@@ -959,8 +959,8 @@ fn test_upgrade_by_non_admin_panics() {
 fn test_upgrade_before_initialize_panics() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let mock_hash = BytesN::from_array(&env, &[0u8; 32]);
     client.upgrade(&mock_hash);
@@ -989,8 +989,8 @@ fn test_initialize_fee_boundary_max_valid() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -1006,8 +1006,8 @@ fn test_initialize_fee_boundary_max_invalid() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -1321,8 +1321,8 @@ fn test_get_following_offset_beyond_list_length_returns_empty() {
     // offset beyond list length must return an empty vec
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -1342,8 +1342,8 @@ fn test_get_following_limit_50_returns_at_most_50() {
     // limit of 50 must return at most 50 results
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     // Follow 60 people
@@ -1363,8 +1363,8 @@ fn test_get_following_limit_51_panics() {
     // limit of 51 must panic with "limit must be between 1 and 50"
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -1378,8 +1378,8 @@ fn test_get_following_mid_list_offset_returns_correct_page() {
     // correct page returned for a mid-list offset
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let mut followees = soroban_sdk::vec![&env];
@@ -1407,8 +1407,8 @@ fn test_get_followers_offset_beyond_list_length_returns_empty() {
     // offset beyond list length must return an empty vec
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -1427,8 +1427,8 @@ fn test_get_followers_limit_50_returns_at_most_50() {
     // limit of 50 must return at most 50 results
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     // 60 people follow alice
@@ -1448,8 +1448,8 @@ fn test_get_followers_limit_51_panics() {
     // limit of 51 must panic with "limit must be between 1 and 50"
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let bob = Address::generate(&env);
@@ -1463,8 +1463,8 @@ fn test_get_followers_mid_list_offset_returns_correct_page() {
     // correct page returned for a mid-list offset
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let alice = Address::generate(&env);
     let mut followers = soroban_sdk::vec![&env];
@@ -1557,7 +1557,7 @@ fn setup_pool<'a>(
     m: u32,
     balance: i128,
 ) -> (
-    LinkoraContractClient<'a>,
+    KovaraContractClient<'a>,
     Address,
     soroban_sdk::Symbol,
     Address,
@@ -1768,8 +1768,8 @@ fn test_tip_full_flow_no_fee() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -1812,8 +1812,8 @@ fn test_tip_full_flow_with_5_percent_fee() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -1860,8 +1860,8 @@ fn test_tip_total_increments_across_multiple_tips() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -1896,8 +1896,8 @@ fn test_tip_fee_split_matches_fee_bps_config() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -2280,8 +2280,8 @@ fn test_tip_cooldown_rejects_within_window() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -2305,8 +2305,8 @@ fn test_tip_cooldown_allows_after_window() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);
@@ -2502,8 +2502,8 @@ fn test_tip_cooldown_uses_typed_storage_key() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register(LinkoraContract, ());
-    let client = LinkoraContractClient::new(&env, &contract_id);
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let treasury = Address::generate(&env);

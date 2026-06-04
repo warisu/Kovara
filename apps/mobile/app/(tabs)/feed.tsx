@@ -50,7 +50,7 @@ export default function FeedScreen() {
         <EmptyState
           icon="📭"
           title="No posts yet"
-          subtitle="Be the first to post on Linkora."
+          subtitle="Be the first to post on Kovara."
           actionLabel="Explore creators"
           onAction={() => router.push("/(tabs)/explore" as Parameters<typeof router.push>[0])}
         />

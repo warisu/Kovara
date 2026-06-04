@@ -1,5 +1,5 @@
 /**
- * Typed TypeScript client for the Linkora Soroban contract.
+ * Typed TypeScript client for the Kovara Soroban contract.
  *
  * Generated / maintained via:
  *   pnpm --filter contracts generate:bindings
@@ -49,7 +49,7 @@ export interface Pool {
 
 // ── Client configuration ──────────────────────────────────────────────────────
 
-export interface LinkoraClientConfig {
+export interface KovaraClientConfig {
   /** Stellar RPC endpoint URL */
   rpcUrl: string;
   /** Deployed contract ID (C...) */
@@ -60,12 +60,12 @@ export interface LinkoraClientConfig {
 
 // ── Typed client ──────────────────────────────────────────────────────────────
 
-export class LinkoraClient {
+export class KovaraClient {
   private readonly contract: Contract;
   private readonly server: StellarRpc.Server;
   private readonly networkPassphrase: string;
 
-  constructor(config: LinkoraClientConfig) {
+  constructor(config: KovaraClientConfig) {
     this.contract = new Contract(config.contractId);
     this.server = new StellarRpc.Server(config.rpcUrl);
     this.networkPassphrase = config.networkPassphrase;
@@ -81,19 +81,13 @@ export class LinkoraClient {
   }
 
   async getProfileCount(): Promise<bigint> {
-    const result = await this.server.simulateTransaction(
-      this.buildTx("get_profile_count", [])
-    );
+    const result = await this.server.simulateTransaction(this.buildTx("get_profile_count", []));
     return scValToNative(extractReturnValue(result)) as bigint;
   }
 
   // ── Social Graph ─────────────────────────────────────────────────────────────
 
-  async getFollowing(
-    user: string,
-    offset: number,
-    limit: number
-  ): Promise<string[]> {
+  async getFollowing(user: string, offset: number, limit: number): Promise<string[]> {
     const result = await this.server.simulateTransaction(
       this.buildTx("get_following", [
         Address.fromString(user).toScVal(),
@@ -104,11 +98,7 @@ export class LinkoraClient {
     return scValToNative(extractReturnValue(result)) as string[];
   }
 
-  async getFollowers(
-    user: string,
-    offset: number,
-    limit: number
-  ): Promise<string[]> {
+  async getFollowers(user: string, offset: number, limit: number): Promise<string[]> {
     const result = await this.server.simulateTransaction(
       this.buildTx("get_followers", [
         Address.fromString(user).toScVal(),
@@ -139,17 +129,11 @@ export class LinkoraClient {
   }
 
   async getPostCount(): Promise<bigint> {
-    const result = await this.server.simulateTransaction(
-      this.buildTx("get_post_count", [])
-    );
+    const result = await this.server.simulateTransaction(this.buildTx("get_post_count", []));
     return scValToNative(extractReturnValue(result)) as bigint;
   }
 
-  async getPostsByAuthor(
-    author: string,
-    offset: number,
-    limit: number
-  ): Promise<bigint[]> {
+  async getPostsByAuthor(author: string, offset: number, limit: number): Promise<bigint[]> {
     const result = await this.server.simulateTransaction(
       this.buildTx("get_posts_by_author", [
         Address.fromString(author).toScVal(),
@@ -181,9 +165,7 @@ export class LinkoraClient {
 
   async getPool(poolId: string): Promise<Pool | null> {
     const result = await this.server.simulateTransaction(
-      this.buildTx("get_pool", [
-        nativeToScVal(poolId, { type: "symbol" }),
-      ])
+      this.buildTx("get_pool", [nativeToScVal(poolId, { type: "symbol" })])
     );
     return parseOptional<Pool>(result);
   }
@@ -191,16 +173,12 @@ export class LinkoraClient {
   // ── Fee & Treasury ───────────────────────────────────────────────────────────
 
   async getFeeBps(): Promise<number> {
-    const result = await this.server.simulateTransaction(
-      this.buildTx("get_fee_bps", [])
-    );
+    const result = await this.server.simulateTransaction(this.buildTx("get_fee_bps", []));
     return scValToNative(extractReturnValue(result)) as number;
   }
 
   async getTreasury(): Promise<string | null> {
-    const result = await this.server.simulateTransaction(
-      this.buildTx("get_treasury", [])
-    );
+    const result = await this.server.simulateTransaction(this.buildTx("get_treasury", []));
     return parseOptional<string>(result);
   }
 
@@ -231,9 +209,7 @@ export class LinkoraClient {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function extractReturnValue(
-  result: StellarRpc.Api.SimulateTransactionResponse
-): xdr.ScVal {
+function extractReturnValue(result: StellarRpc.Api.SimulateTransactionResponse): xdr.ScVal {
   if (StellarRpc.Api.isSimulationError(result)) {
     throw new Error(`Simulation error: ${result.error}`);
   }
@@ -244,9 +220,7 @@ function extractReturnValue(
   return success.result.retval;
 }
 
-function parseOptional<T>(
-  result: StellarRpc.Api.SimulateTransactionResponse
-): T | null {
+function parseOptional<T>(result: StellarRpc.Api.SimulateTransactionResponse): T | null {
   const val = extractReturnValue(result);
   const native = scValToNative(val);
   if (native === undefined || native === null) return null;

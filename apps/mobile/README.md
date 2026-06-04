@@ -1,6 +1,6 @@
-# Linkora Mobile
+# Kovara Mobile
 
-React Native / Expo mobile app for the Linkora SocialFi platform on Stellar.
+React Native / Expo mobile app for the Kovara SocialFi platform on Stellar.
 
 > **Status:** This package is planned and not yet scaffolded. This README and the accompanying developer guide exist to document the intended structure ahead of implementation.
 
@@ -14,7 +14,7 @@ See [docs/mobile/DEVELOPER_GUIDE.md](../../docs/mobile/DEVELOPER_GUIDE.md) for f
 - [Expo Router](https://docs.expo.dev/router/introduction/) — file-based navigation
 - [EAS Build](https://docs.expo.dev/build/introduction/) — cloud native builds
 - [Stellar Wallet Kit](https://stellarwalletkit.dev) — wallet integration
-- [`packages/sdk`](../../packages/sdk) — typed Linkora contract client
+- [`packages/sdk`](../../packages/sdk) — typed Kovara contract client
 
 ## Testing
 

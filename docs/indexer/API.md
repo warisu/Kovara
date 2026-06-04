@@ -1,6 +1,6 @@
-# Linkora Indexer REST API
+# Kovara Indexer REST API
 
-This document describes every REST endpoint exposed by the Linkora indexer service.
+This document describes every REST endpoint exposed by the Kovara indexer service.
 
 **Base URL:** `http://localhost:3001` (development) or the configured `INDEXER_URL` in production.
 
@@ -47,10 +47,10 @@ Returns `200 OK` when the indexer is running and the database connection is heal
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `status` | `"ok"` | Always `"ok"` when the service is healthy |
-| `ledger` | `number` | Last fully indexed ledger sequence |
+| Field    | Type     | Description                               |
+| -------- | -------- | ----------------------------------------- |
+| `status` | `"ok"`   | Always `"ok"` when the service is healthy |
+| `ledger` | `number` | Last fully indexed ledger sequence        |
 
 ---
 
@@ -70,11 +70,11 @@ Full-text search over post content.
 }
 ```
 
-| Field | Type | Required | Default | Constraints |
-|-------|------|----------|---------|-------------|
-| `query` | `string` | yes | — | 1–200 characters |
-| `limit` | `number` | no | `20` | 1–100 |
-| `offset` | `number` | no | `0` | ≥ 0 |
+| Field    | Type     | Required | Default | Constraints      |
+| -------- | -------- | -------- | ------- | ---------------- |
+| `query`  | `string` | yes      | —       | 1–200 characters |
+| `limit`  | `number` | no       | `20`    | 1–100            |
+| `offset` | `number` | no       | `0`     | ≥ 0              |
 
 **Response `200`**
 
@@ -106,9 +106,9 @@ Fetch a single post by its numeric ID.
 
 **Path parameters**
 
-| Param | Type | Description |
-|-------|------|-------------|
-| `id` | `u64` | Post ID assigned by the contract |
+| Param | Type  | Description                      |
+| ----- | ----- | -------------------------------- |
+| `id`  | `u64` | Post ID assigned by the contract |
 
 **Response `200`**
 
@@ -116,7 +116,7 @@ Fetch a single post by its numeric ID.
 {
   "id": "42",
   "author": "GABC...XYZ",
-  "content": "Hello Linkora!",
+  "content": "Hello Kovara!",
   "tip_total": "500000000",
   "like_count": 3,
   "created_ledger": 12200000,
@@ -142,16 +142,16 @@ Paginated list of post IDs authored by a Stellar address.
 
 **Path parameters**
 
-| Param | Type | Description |
-|-------|------|-------------|
+| Param     | Type     | Description                      |
+| --------- | -------- | -------------------------------- |
 | `address` | `string` | Stellar account address (`G...`) |
 
 **Query parameters**
 
-| Param | Type | Default | Constraints |
-|-------|------|---------|-------------|
-| `limit` | `number` | `20` | 1–50 |
-| `offset` | `number` | `0` | ≥ 0 |
+| Param    | Type     | Default | Constraints |
+| -------- | -------- | ------- | ----------- |
+| `limit`  | `number` | `20`    | 1–50        |
+| `offset` | `number` | `0`     | ≥ 0         |
 
 **Response `200`**
 
@@ -199,10 +199,10 @@ Paginated list of all registered profiles, ordered by `updated_ledger` descendin
 
 **Query parameters**
 
-| Param | Type | Default | Constraints |
-|-------|------|---------|-------------|
-| `limit` | `number` | `20` | 1–100 |
-| `offset` | `number` | `0` | ≥ 0 |
+| Param    | Type     | Default | Constraints |
+| -------- | -------- | ------- | ----------- |
+| `limit`  | `number` | `20`    | 1–100       |
+| `offset` | `number` | `0`     | ≥ 0         |
 
 **Response `200`**
 
@@ -231,10 +231,10 @@ Paginated list of addresses that `:address` follows.
 
 **Query parameters**
 
-| Param | Type | Default | Constraints |
-|-------|------|---------|-------------|
-| `limit` | `number` | `20` | 1–50 |
-| `offset` | `number` | `0` | ≥ 0 |
+| Param    | Type     | Default | Constraints |
+| -------- | -------- | ------- | ----------- |
+| `limit`  | `number` | `20`    | 1–50        |
+| `offset` | `number` | `0`     | ≥ 0         |
 
 **Response `200`**
 
@@ -274,10 +274,10 @@ Paginated tip history for a post.
 
 **Query parameters**
 
-| Param | Type | Default | Constraints |
-|-------|------|---------|-------------|
-| `limit` | `number` | `20` | 1–100 |
-| `offset` | `number` | `0` | ≥ 0 |
+| Param    | Type     | Default | Constraints |
+| -------- | -------- | ------- | ----------- |
+| `limit`  | `number` | `20`    | 1–100       |
+| `offset` | `number` | `0`     | ≥ 0         |
 
 **Response `200`**
 
@@ -337,8 +337,8 @@ Fetch the current state of a community pool.
 
 **Path parameters**
 
-| Param | Type | Description |
-|-------|------|-------------|
+| Param     | Type     | Description                    |
+| --------- | -------- | ------------------------------ |
 | `pool_id` | `string` | Symbol identifier for the pool |
 
 **Response `200`**
@@ -378,9 +378,9 @@ Returns the indexer's current sync position.
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `ledger_seq` | `number` | Last fully processed ledger |
+| Field          | Type     | Description                    |
+| -------------- | -------- | ------------------------------ |
+| `ledger_seq`   | `number` | Last fully processed ledger    |
 | `event_cursor` | `string` | Opaque RPC cursor for resuming |
 
 ---
@@ -396,9 +396,9 @@ All error responses share the same shape:
 }
 ```
 
-| Code | HTTP status | Meaning |
-|------|-------------|---------|
-| `NOT_FOUND` | 404 | Resource does not exist in the index |
-| `INVALID_QUERY` | 400 | Missing or malformed request parameter |
-| `LIMIT_EXCEEDED` | 400 | `limit` parameter exceeds the maximum |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
+| Code             | HTTP status | Meaning                                |
+| ---------------- | ----------- | -------------------------------------- |
+| `NOT_FOUND`      | 404         | Resource does not exist in the index   |
+| `INVALID_QUERY`  | 400         | Missing or malformed request parameter |
+| `LIMIT_EXCEEDED` | 400         | `limit` parameter exceeds the maximum  |
+| `INTERNAL_ERROR` | 500         | Unexpected server error                |

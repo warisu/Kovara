@@ -1,5 +1,5 @@
 /**
- * Linkora Mini App Host Bridge
+ * Kovara Mini App Host Bridge
  *
  * Exposes a typed SDK surface to mini apps running inside the host.
  * Each namespace is gated by a permission declared in the mini app manifest.
@@ -88,7 +88,7 @@ export function createBridge(options: BridgeOptions) {
   };
 }
 
-export type LinkoraSDK = ReturnType<typeof createBridge>;
+export type KovaraSDK = ReturnType<typeof createBridge>;
 import { assertPermission, BridgeError, BridgePermission } from "./permissions";
 import { getWalletAddress, getItem, StorageKey } from "../utils/secureStorage";
 

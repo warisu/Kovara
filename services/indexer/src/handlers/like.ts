@@ -1,6 +1,6 @@
 /**
  * Like Event Handler
- * Handles LikePostEvent from the Linkora contract
+ * Handles LikePostEvent from the Kovara contract
  */
 
 import { Pool } from "pg";

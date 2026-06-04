@@ -2,7 +2,7 @@
  * Soroban event streaming via Horizon/Soroban RPC.
  *
  * Polls getEvents on the configured RPC endpoint and yields raw contract
- * events for the Linkora contract. Callers provide a cursor (latest processed
+ * events for the Kovara contract. Callers provide a cursor (latest processed
  * ledger) so the stream can resume after a restart.
  */
 
@@ -98,9 +98,7 @@ export async function streamEvents(
   let cursor: string | undefined;
   let startLedger = config.startLedger;
 
-  console.log(
-    `[stream] Starting from ledger ${startLedger}, contract=${config.contractId}`
-  );
+  console.log(`[stream] Starting from ledger ${startLedger}, contract=${config.contractId}`);
 
   while (!signal.aborted) {
     try {

@@ -1,6 +1,6 @@
-# Linkora Mini Apps — Examples
+# Kovara Mini Apps — Examples
 
-Mini apps are single-page HTML/JS applications that run inside the Linkora mobile app's built-in browser. They communicate with the host app through the `window.LinkoraSDK` bridge, which exposes wallet signing and post interaction APIs.
+Mini apps are single-page HTML/JS applications that run inside the Kovara mobile app's built-in browser. They communicate with the host app through the `window.KovaraSDK` bridge, which exposes wallet signing and post interaction APIs.
 
 ---
 
@@ -8,17 +8,17 @@ Mini apps are single-page HTML/JS applications that run inside the Linkora mobil
 
 | App                                  | Description                                                            |
 | ------------------------------------ | ---------------------------------------------------------------------- |
-| [`tip-jar/`](./tip-jar/)             | Send XLM tips to any Linkora post by ID                                |
+| [`tip-jar/`](./tip-jar/)             | Send XLM tips to any Kovara post by ID                                 |
 | [`creator-token/`](./creator-token/) | View a creator token balance and request a creator-token tip signature |
 
 ---
 
 ## How Mini Apps Work
 
-When a mini app is loaded inside Linkora, the host injects `window.LinkoraSDK` before the page script runs:
+When a mini app is loaded inside Kovara, the host injects `window.KovaraSDK` before the page script runs:
 
 ```js
-window.LinkoraSDK = {
+window.KovaraSDK = {
   wallet: {
     /** Returns the connected Stellar public key */
     getAddress: () => Promise<string>,
@@ -29,13 +29,13 @@ window.LinkoraSDK = {
 };
 ```
 
-Mini apps declare their required permissions in `linkora-manifest.json`. The host app prompts the user to grant those permissions before loading the app.
+Mini apps declare their required permissions in `Kovara-manifest.json`. The host app prompts the user to grant those permissions before loading the app.
 
 ---
 
 ## Manifest Format
 
-Every mini app must include a `linkora-manifest.json` at its root:
+Every mini app must include a `Kovara-manifest.json` at its root:
 
 ```json
 {
@@ -69,7 +69,7 @@ npx serve examples/mini-apps/tip-jar
 # Then open http://localhost:3000
 ```
 
-When running outside the Linkora app, `window.LinkoraSDK` is not injected. Each example includes a **dev fallback** that mocks the SDK so you can test the UI without a real wallet.
+When running outside the Kovara app, `window.KovaraSDK` is not injected. Each example includes a **dev fallback** that mocks the SDK so you can test the UI without a real wallet.
 
 ---
 
@@ -77,9 +77,9 @@ When running outside the Linkora app, `window.LinkoraSDK` is not injected. Each 
 
 A reference mini app that demonstrates:
 
-- Reading the connected wallet address via `LinkoraSDK.wallet.getAddress()`
+- Reading the connected wallet address via `KovaraSDK.wallet.getAddress()`
 - Building a tip transaction for a post by ID
-- Requesting a wallet signature via `LinkoraSDK.wallet.signTransaction()`
+- Requesting a wallet signature via `KovaraSDK.wallet.signTransaction()`
 
 ### Setup
 
@@ -87,7 +87,7 @@ A reference mini app that demonstrates:
 2. Enter a post ID and an XLM amount.
 3. Click **Send Tip** — the dev mock will simulate signing and submission.
 
-To use with a real wallet inside the Linkora app, load the mini app via the **Mini Apps** tab and grant the requested permissions.
+To use with a real wallet inside the Kovara app, load the mini app via the **Mini Apps** tab and grant the requested permissions.
 
 ---
 
@@ -95,9 +95,9 @@ To use with a real wallet inside the Linkora app, load the mini app via the **Mi
 
 A reference mini app that demonstrates:
 
-- Reading creator token metadata via `LinkoraSDK.profile.get()`
+- Reading creator token metadata via `KovaraSDK.profile.get()`
 - Loading the connected wallet's token balance from Stellar Horizon
-- Requesting a tip signature via `LinkoraSDK.wallet.signTransaction()`
+- Requesting a tip signature via `KovaraSDK.wallet.signTransaction()`
 
 ### Setup
 
@@ -105,4 +105,4 @@ A reference mini app that demonstrates:
 2. Review the loaded creator token balance.
 3. Enter a tip amount and click **Tip Creator**.
 
-The browser fallback mocks `LinkoraSDK.profile.get()` and wallet signing. Inside Linkora, the host-provided SDK is used after the mini app receives `profile.get`, `wallet.getAddress`, and `wallet.signTransaction` permissions.
+The browser fallback mocks `KovaraSDK.profile.get()` and wallet signing. Inside Kovara, the host-provided SDK is used after the mini app receives `profile.get`, `wallet.getAddress`, and `wallet.signTransaction` permissions.

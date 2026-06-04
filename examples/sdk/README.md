@@ -1,6 +1,6 @@
-# Linkora Social - SDK Usage Examples
+# Kovara Social - SDK Usage Examples
 
-This directory contains runnable examples demonstrating how to use the typed Linkora Social SDK client (`LinkoraClient`) in both Node.js (backend/testing) and browser (frontend/wallet) runtimes.
+This directory contains runnable examples demonstrating how to use the typed Kovara Social SDK client (`KovaraClient`) in both Node.js (backend/testing) and browser (frontend/wallet) runtimes.
 
 ---
 
@@ -30,11 +30,11 @@ npx ts-node -O '{"module": "commonjs"}' examples/sdk/node-example.ts
 ### Core Code Snippet (Node.js)
 
 ```typescript
-import { LinkoraClient } from "../../packages/sdk/src/index";
+import { KovaraClient } from "../../packages/sdk/src/index";
 import { Keypair } from "@stellar/stellar-sdk";
 
 // Initialize the client pointing to Stellar RPC
-const client = new LinkoraClient({
+const client = new KovaraClient({
   rpcUrl: "https://soroban-testnet.stellar.org",
   contractId: "CDH4Z2LWYUQCXSQ66ZUP5G6T4I5S2XZS2XST4D4D4D4D4D4D4D4D4D4D",
   networkPassphrase: "Test SDF Network ; September 2015",
@@ -50,7 +50,7 @@ const result = await client.createPost(
   signerKeypair.publicKey(),
   {
     author: signerKeypair.publicKey(),
-    content: "Publishing directly from a Node.js process!"
+    content: "Publishing directly from a Node.js process!",
   }
 );
 console.log(`Post created! Tx Hash: ${result.txHash}, Post ID: ${result.postId}`);
@@ -78,9 +78,9 @@ open examples/sdk/browser-example.html
 if (typeof window.freighter !== "undefined") {
   // Connect and fetch public key
   const publicKey = await window.freighter.getPublicKey();
-  
-  // Wire up the Linkora client
-  const client = new LinkoraClient({
+
+  // Wire up the Kovara client
+  const client = new KovaraClient({
     rpcUrl: "https://soroban-testnet.stellar.org",
     contractId: "CDH4Z2LWYUQCXSQ66ZUP5G6T4I5S2XZS2XST4D4D4D4D4D4D4D4D4D4D",
     networkPassphrase: "Test SDF Network ; September 2015",

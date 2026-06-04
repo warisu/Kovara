@@ -70,7 +70,7 @@ describe("useWallet", () => {
 
     it("should load stored public key from localStorage on mount", async () => {
       const storedKey = "GBRPYHIL2CI3WHZDTOOQFC6EB4RBIGSJRVSBUOYS77TQ7CQK5FHQ6SR";
-      localStorageMock.setItem("linkora_wallet_public_key", storedKey);
+      localStorageMock.setItem("Kovara_wallet_public_key", storedKey);
 
       const { result } = renderHook(() => useWallet(), {
         wrapper: WalletProvider,
@@ -100,7 +100,7 @@ describe("useWallet", () => {
       expect(result.current.isConnected).toBe(true);
       expect(result.current.isConnecting).toBe(false);
       expect(result.current.error).toBe(null);
-      expect(localStorageMock.getItem("linkora_wallet_public_key")).toBe(publicKey);
+      expect(localStorageMock.getItem("Kovara_wallet_public_key")).toBe(publicKey);
     });
 
     it("should show isConnecting state during connection", async () => {
@@ -188,7 +188,7 @@ describe("useWallet", () => {
   describe("disconnect", () => {
     it("should disconnect wallet and clear state", async () => {
       const publicKey = "GBRPYHIL2CI3WHZDTOOQFC6EB4RBIGSJRVSBUOYS77TQ7CQK5FHQ6SR";
-      localStorageMock.setItem("linkora_wallet_public_key", publicKey);
+      localStorageMock.setItem("Kovara_wallet_public_key", publicKey);
 
       const { result } = renderHook(() => useWallet(), {
         wrapper: WalletProvider,
@@ -206,7 +206,7 @@ describe("useWallet", () => {
       expect(result.current.isConnected).toBe(false);
       expect(result.current.isConnecting).toBe(false);
       expect(result.current.error).toBeNull();
-      expect(localStorageMock.getItem("linkora_wallet_public_key")).toBeNull();
+      expect(localStorageMock.getItem("Kovara_wallet_public_key")).toBeNull();
     });
 
     it("should safely disconnect when not connected", () => {

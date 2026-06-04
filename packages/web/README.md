@@ -1,6 +1,6 @@
 # Web Package
 
-This package bootstraps the Linkora web frontend using Next.js App Router and TypeScript.
+This package bootstraps the Kovara web frontend using Next.js App Router and TypeScript.
 
 ## Prerequisites
 
@@ -46,11 +46,11 @@ Copy the example file and fill in your values:
 cp .env.example .env.local
 ```
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SOROBAN_RPC_URL` | Soroban RPC endpoint (e.g. `https://soroban-testnet.stellar.org`) |
-| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | Stellar network passphrase |
-| `NEXT_PUBLIC_CONTRACT_ID` | Deployed Linkora contract ID |
+| Variable                         | Description                                                       |
+| -------------------------------- | ----------------------------------------------------------------- |
+| `NEXT_PUBLIC_SOROBAN_RPC_URL`    | Soroban RPC endpoint (e.g. `https://soroban-testnet.stellar.org`) |
+| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | Stellar network passphrase                                        |
+| `NEXT_PUBLIC_CONTRACT_ID`        | Deployed Kovara contract ID                                       |
 
 The app will throw an error at startup if any of these variables are missing.
 
@@ -135,6 +135,7 @@ bash tests/integration/run_e2e.sh
 ```
 
 This will:
+
 1. Start a local Stellar sandbox
 2. Deploy contracts
 3. Fund test identities
@@ -144,6 +145,7 @@ Then run Playwright tests in another terminal.
 ### CI/CD Integration
 
 E2E tests can be run in CI workflows. Set `CI=true` environment variable to:
+
 - Skip server reuse (always start fresh)
 - Retry failed tests up to 2 times
 - Use single worker (no parallelization)

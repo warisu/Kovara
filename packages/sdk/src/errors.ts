@@ -1,7 +1,7 @@
 /**
- * Base class for all Linkora SDK errors.
+ * Base class for all Kovara SDK errors.
  */
-export class LinkoraError extends Error {
+export class KovaraError extends Error {
   constructor(
     message: string,
     public readonly originalError?: unknown
@@ -16,39 +16,39 @@ export class LinkoraError extends Error {
 /**
  * Thrown when a requested resource (e.g. post, pool, or profile) does not exist on-chain.
  */
-export class NotFoundError extends LinkoraError {}
+export class NotFoundError extends KovaraError {}
 
 /**
  * Thrown when the caller is unauthorized (e.g., trying to modify another user's post,
  * pool withdraw without being a pool admin, or trying to interact with a blocker).
  */
-export class UnauthorizedError extends LinkoraError {}
+export class UnauthorizedError extends KovaraError {}
 
 /**
  * Thrown when the caller has insufficient funds or insufficient token allowance for operations.
  */
-export class InsufficientBalanceError extends LinkoraError {}
+export class InsufficientBalanceError extends KovaraError {}
 
 /**
  * Thrown when the tipping cooldown window is active.
  */
-export class CooldownError extends LinkoraError {}
+export class CooldownError extends KovaraError {}
 
 /**
  * Thrown when input parameters fail pre-flight validation (invalid username, post content length limits, etc.).
  */
-export class InvalidInputError extends LinkoraError {}
+export class InvalidInputError extends KovaraError {}
 
 /**
  * Thrown when a mini-app manifest fails JSON schema validation.
  */
-export class InvalidManifestError extends LinkoraError {}
+export class InvalidManifestError extends KovaraError {}
 
 /**
- * Maps a raw error string or transaction simulation response error to a specific LinkoraError subclass.
+ * Maps a raw error string or transaction simulation response error to a specific KovaraError subclass.
  *
  * @param err The caught raw error object or string.
- * @returns A typed LinkoraError instance.
+ * @returns A typed KovaraError instance.
  */
 export function mapError(err: unknown): Error {
   const msg = err instanceof Error ? err.message : String(err);
@@ -75,5 +75,5 @@ export function mapError(err: unknown): Error {
     return new InvalidInputError(`Invalid input parameters: ${msg}`, err);
   }
 
-  return new LinkoraError(msg, err);
+  return new KovaraError(msg, err);
 }

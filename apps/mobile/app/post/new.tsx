@@ -25,11 +25,11 @@ const MAX_CHARS = 280;
 
 /**
  * Stub for the real contract call.
- * Replace with `LinkoraClient.createPost(author, content)` once the SDK is wired.
+ * Replace with `KovaraClient.createPost(author, content)` once the SDK is wired.
  */
 async function submitCreatePost(_author: string, _content: string): Promise<string> {
   // TODO: replace with real SDK call, e.g.:
-  // const client = new LinkoraClient({ contractId: CONTRACT_ID, rpcUrl: RPC_URL });
+  // const client = new KovaraClient({ contractId: CONTRACT_ID, rpcUrl: RPC_URL });
   // const postId = await client.createPost(author, content);
   // return String(postId);
   await new Promise((r) => setTimeout(r, 1200)); // simulate network

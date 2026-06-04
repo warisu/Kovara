@@ -1,6 +1,6 @@
 /**
  * Post Event Handlers
- * Handles PostCreatedEvent and PostDeletedEvent from the Linkora contract
+ * Handles PostCreatedEvent and PostDeletedEvent from the Kovara contract
  */
 
 import { Pool } from "pg";

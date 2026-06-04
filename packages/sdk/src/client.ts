@@ -42,9 +42,9 @@ export interface ClientConfig {
 }
 
 /**
- * Typed client for all Linkora social contract read methods
+ * Typed client for all Kovara social contract read methods
  */
-export class LinkoraClient {
+export class KovaraClient {
   private contractId: string;
   private rpcUrl: string;
   private networkPassphrase: string;
@@ -375,7 +375,12 @@ export class LinkoraClient {
    * @returns The base64-encoded XDR envelope
    */
   setProfile(user: string, username: string, creatorToken: string): string {
-    return this.buildTx("set_profile", scvAddress(user), scvString(username), scvAddress(creatorToken));
+    return this.buildTx(
+      "set_profile",
+      scvAddress(user),
+      scvString(username),
+      scvAddress(creatorToken)
+    );
   }
 
   /**

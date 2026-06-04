@@ -1,5 +1,5 @@
 import {
-  LinkoraError,
+  KovaraError,
   NotFoundError,
   UnauthorizedError,
   InsufficientBalanceError,
@@ -9,47 +9,47 @@ import {
 } from "../errors";
 
 describe("Error classes", () => {
-  it("LinkoraError sets name and message correctly", () => {
-    const err = new LinkoraError("Something went wrong");
+  it("KovaraError sets name and message correctly", () => {
+    const err = new KovaraError("Something went wrong");
     expect(err.message).toBe("Something went wrong");
-    expect(err.name).toBe("LinkoraError");
+    expect(err.name).toBe("KovaraError");
     expect(err.originalError).toBeUndefined();
   });
 
-  it("LinkoraError preserves original error", () => {
+  it("KovaraError preserves original error", () => {
     const original = new Error("network failure");
-    const err = new LinkoraError("SDK error", original);
+    const err = new KovaraError("SDK error", original);
     expect(err.originalError).toBe(original);
   });
 
-  it("NotFoundError is an instance of LinkoraError", () => {
+  it("NotFoundError is an instance of KovaraError", () => {
     const err = new NotFoundError("not found");
-    expect(err).toBeInstanceOf(LinkoraError);
+    expect(err).toBeInstanceOf(KovaraError);
     expect(err).toBeInstanceOf(NotFoundError);
     expect(err.name).toBe("NotFoundError");
   });
 
-  it("UnauthorizedError is an instance of LinkoraError", () => {
+  it("UnauthorizedError is an instance of KovaraError", () => {
     const err = new UnauthorizedError("unauthorized");
-    expect(err).toBeInstanceOf(LinkoraError);
+    expect(err).toBeInstanceOf(KovaraError);
     expect(err).toBeInstanceOf(UnauthorizedError);
   });
 
-  it("InsufficientBalanceError is an instance of LinkoraError", () => {
+  it("InsufficientBalanceError is an instance of KovaraError", () => {
     const err = new InsufficientBalanceError("low balance");
-    expect(err).toBeInstanceOf(LinkoraError);
+    expect(err).toBeInstanceOf(KovaraError);
     expect(err).toBeInstanceOf(InsufficientBalanceError);
   });
 
-  it("CooldownError is an instance of LinkoraError", () => {
+  it("CooldownError is an instance of KovaraError", () => {
     const err = new CooldownError("cooldown active");
-    expect(err).toBeInstanceOf(LinkoraError);
+    expect(err).toBeInstanceOf(KovaraError);
     expect(err).toBeInstanceOf(CooldownError);
   });
 
-  it("InvalidInputError is an instance of LinkoraError", () => {
+  it("InvalidInputError is an instance of KovaraError", () => {
     const err = new InvalidInputError("bad input");
-    expect(err).toBeInstanceOf(LinkoraError);
+    expect(err).toBeInstanceOf(KovaraError);
     expect(err).toBeInstanceOf(InvalidInputError);
   });
 
@@ -155,9 +155,9 @@ describe("mapError", () => {
   });
 
   describe("default fallback", () => {
-    it("returns a generic LinkoraError for unknown errors", () => {
+    it("returns a generic KovaraError for unknown errors", () => {
       const result = mapError("something unexpected happened");
-      expect(result).toBeInstanceOf(LinkoraError);
+      expect(result).toBeInstanceOf(KovaraError);
       expect(result).not.toBeInstanceOf(NotFoundError);
       expect(result.message).toBe("something unexpected happened");
     });
@@ -165,7 +165,7 @@ describe("mapError", () => {
     it("handles Error objects", () => {
       const error = new Error("custom runtime error");
       const result = mapError(error);
-      expect(result).toBeInstanceOf(LinkoraError);
+      expect(result).toBeInstanceOf(KovaraError);
       expect(result.message).toBe("custom runtime error");
     });
   });

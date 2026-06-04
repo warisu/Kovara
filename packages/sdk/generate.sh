@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-WASM="packages/contracts/contracts/linkora-contracts/target/wasm32-unknown-unknown/release/linkora_contracts.wasm"
+WASM="packages/contracts/contracts/Kovara-contracts/target/wasm32-unknown-unknown/release/Kovara_contracts.wasm"
 OUT_DIR="packages/sdk/src"
 
 if [ ! -f "$WASM" ]; then

@@ -6,7 +6,7 @@ export function NotConnectedState({ onConnect }: { onConnect: () => void }) {
       <div>
         <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
         <p className="text-[var(--text-muted)] max-w-xs">
-          Approve the connection in Freighter to access Linkora.
+          Approve the connection in Freighter to access Kovara.
         </p>
       </div>
       <button onClick={onConnect} className="btn-primary">

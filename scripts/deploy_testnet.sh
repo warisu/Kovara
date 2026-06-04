@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy and initialize the Linkora contract on Stellar Testnet.
+# Deploy and initialize the Kovara contract on Stellar Testnet.
 #
 # Required environment variables:
 #   ADMIN_SECRET     - Secret key of the deployer / contract admin account
@@ -34,8 +34,8 @@ NETWORK="${NETWORK:-testnet}"
 FEE_BPS="${FEE_BPS:-0}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONTRACT_DIR="$ROOT_DIR/packages/contracts/contracts/linkora-contracts"
-WASM_PATH="$CONTRACT_DIR/target/wasm32v1-none/release/linkora_contracts.wasm"
+CONTRACT_DIR="$ROOT_DIR/packages/contracts/contracts/Kovara-contracts"
+WASM_PATH="$CONTRACT_DIR/target/wasm32v1-none/release/Kovara_contracts.wasm"
 
 # ── Validate environment ───────────────────────────────────────────────────────
 
@@ -96,8 +96,8 @@ fi
 CFG_DIR="$(mktemp -d)"
 trap 'rm -rf "$CFG_DIR"' EXIT
 
-stellar --config-dir "$CFG_DIR" keys add linkora_deployer --secret-key "$ADMIN_SECRET"
-ADMIN_ADDRESS="$(stellar --config-dir "$CFG_DIR" keys address linkora_deployer)"
+stellar --config-dir "$CFG_DIR" keys add Kovara_deployer --secret-key "$ADMIN_SECRET"
+ADMIN_ADDRESS="$(stellar --config-dir "$CFG_DIR" keys address Kovara_deployer)"
 
 # ── Skip or deploy ────────────────────────────────────────────────────────────
 
@@ -118,7 +118,7 @@ else
   echo "[2/3] Deploying contract to $NETWORK..."
   CONTRACT_ID="$(stellar --config-dir "$CFG_DIR" contract deploy \
     --network "$NETWORK" \
-    --source-account linkora_deployer \
+    --source-account Kovara_deployer \
     --wasm "$WASM_PATH")"
 
   echo "  contract_id=$CONTRACT_ID"
@@ -130,7 +130,7 @@ INIT_STEP=$([[ -n "${CONTRACT_ID:-}" ]] && echo "2/2" || echo "3/3")
 echo "[$INIT_STEP] Initializing contract..."
 stellar --config-dir "$CFG_DIR" contract invoke \
   --network "$NETWORK" \
-  --source-account linkora_deployer \
+  --source-account Kovara_deployer \
   --id "$CONTRACT_ID" \
   -- initialize \
     --admin "$ADMIN_ADDRESS" \

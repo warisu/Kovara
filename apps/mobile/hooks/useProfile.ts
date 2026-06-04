@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LinkoraClient } from "../../../packages/sdk/src/client";
+import { KovaraClient } from "../../../packages/sdk/src/client";
 
 import { useNetwork } from "./useNetwork";
 import { useFollowers } from "./useFollowers";
@@ -17,8 +17,8 @@ export function useProfile(address: string) {
   const { rpcUrl, contractId } = useNetwork();
   const { address: me } = useWallet();
 
-  const clientRef = useRef<LinkoraClient | null>(null);
-  clientRef.current = clientRef.current ?? new LinkoraClient({ contractId, rpcUrl });
+  const clientRef = useRef<KovaraClient | null>(null);
+  clientRef.current = clientRef.current ?? new KovaraClient({ contractId, rpcUrl });
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState<boolean>(!!address);
@@ -42,7 +42,7 @@ export function useProfile(address: string) {
     setLoading(true);
     setError(null);
     try {
-      const client = clientRef.current as LinkoraClient;
+      const client = clientRef.current as KovaraClient;
       const p = await client.getProfile(address);
       setProfile(
         p
@@ -75,7 +75,7 @@ export function useProfile(address: string) {
       return;
     }
 
-    const client = clientRef.current as LinkoraClient;
+    const client = clientRef.current as KovaraClient;
     if (!client) {
       showError("SDK client not available");
       return;
@@ -89,13 +89,13 @@ export function useProfile(address: string) {
       // Try to use an injected wallet kit that can sign/submit
       const kit = (
         globalThis as unknown as {
-          __LINKORA_WALLET_KIT__?: {
+          __Kovara_WALLET_KIT__?: {
             signAndSubmitTransaction: (opts: {
               txXdr: string;
             }) => Promise<{ hash?: string; txHash?: string }>;
           };
         }
-      ).__LINKORA_WALLET_KIT__;
+      ).__Kovara_WALLET_KIT__;
 
       if (kit && typeof kit.signAndSubmitTransaction === "function") {
         const res = await kit.signAndSubmitTransaction({ txXdr });

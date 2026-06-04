@@ -4,8 +4,8 @@
   "description": "View a creator token balance and tip with the creator token.",
   "entry": "index.html",
   "permissions": ["profile.get", "wallet.getAddress", "wallet.signTransaction"],
-  "author": "Linkora Contributors",
-  "homepage": "https://github.com/Epta-Node/Linkora-social",
+  "author": "Kovara Contributors",
+  "homepage": "https://github.com/Epta-Node/Kovara",
   "categories": ["creator", "payments"],
   "minSdkVersion": "1.0.0"
 }

@@ -1,6 +1,6 @@
 # Good First Issue Drafts
 
-These drafts are scoped for new contributors while still moving Linkora-social forward. Each issue should include `good first issue` plus the listed labels. Create any missing labels from the label reference at the bottom.
+These drafts are scoped for new contributors while still moving Kovara forward. Each issue should include `good first issue` plus the listed labels. Create any missing labels from the label reference at the bottom.
 
 ---
 
@@ -14,7 +14,7 @@ Labels: `good first issue`, `tests`, `contracts`
 
 ### Scope
 
-- Add a unit test in `packages/contracts/contracts/linkora-contracts/src/test.rs`.
+- Add a unit test in `packages/contracts/contracts/Kovara-contracts/src/test.rs`.
 - Follow the same account twice from the same follower.
 - Assert `get_following` still returns exactly one address.
 - Keep the existing contract API unchanged.
@@ -27,8 +27,8 @@ Labels: `good first issue`, `tests`, `contracts`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -55,7 +55,7 @@ Labels: `good first issue`, `tests`, `contracts`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -81,8 +81,8 @@ Labels: `good first issue`, `bug`, `contracts`, `security`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -108,8 +108,8 @@ Labels: `good first issue`, `bug`, `contracts`, `security`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -135,8 +135,8 @@ Labels: `good first issue`, `bug`, `contracts`, `security`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -163,7 +163,7 @@ The README explains the public API, but contributors still need to read the cont
 ### Helpful Files
 
 - `README.md`
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
 
 ---
 
@@ -178,7 +178,7 @@ The README lists public functions, but a table with inputs, auth requirements, a
 ### Scope
 
 - Add a contract API table to `README.md` or `packages/contracts/README.md`.
-- Include each public function in `LinkoraContract`.
+- Include each public function in `KovaraContract`.
 - For each function, document the purpose, required signer, important inputs, and return value.
 
 ### Acceptance Criteria
@@ -190,7 +190,7 @@ The README lists public functions, but a table with inputs, auth requirements, a
 ### Helpful Files
 
 - `README.md`
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
 
 ---
 
@@ -244,8 +244,8 @@ Labels: `good first issue`, `tests`, `contracts`
 
 ### Helpful Files
 
-- `packages/contracts/contracts/linkora-contracts/src/lib.rs`
-- `packages/contracts/contracts/linkora-contracts/src/test.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/lib.rs`
+- `packages/contracts/contracts/Kovara-contracts/src/test.rs`
 
 ---
 
@@ -280,14 +280,14 @@ The README has contribution guidance, but a PR template helps keep incoming cont
 
 Use these labels if they do not already exist in GitHub:
 
-| Label | Color | Description |
-| --- | --- | --- |
-| `good first issue` | `7057ff` | Small, well-scoped task suitable for new contributors |
-| `help wanted` | `008672` | Maintainers welcome community contribution |
-| `documentation` | `0075ca` | Documentation-only improvement |
-| `tests` | `d4c5f9` | Adds or improves test coverage |
-| `contracts` | `fbca04` | Soroban smart contract work |
-| `bug` | `d73a4a` | Fixes incorrect or unsafe behavior |
-| `security` | `b60205` | Security or safety hardening |
-| `developer experience` | `cfd3d7` | Improves contributor workflow or local setup |
-| `maintainer experience` | `bfdadc` | Improves project maintenance workflow |
+| Label                   | Color    | Description                                           |
+| ----------------------- | -------- | ----------------------------------------------------- |
+| `good first issue`      | `7057ff` | Small, well-scoped task suitable for new contributors |
+| `help wanted`           | `008672` | Maintainers welcome community contribution            |
+| `documentation`         | `0075ca` | Documentation-only improvement                        |
+| `tests`                 | `d4c5f9` | Adds or improves test coverage                        |
+| `contracts`             | `fbca04` | Soroban smart contract work                           |
+| `bug`                   | `d73a4a` | Fixes incorrect or unsafe behavior                    |
+| `security`              | `b60205` | Security or safety hardening                          |
+| `developer experience`  | `cfd3d7` | Improves contributor workflow or local setup          |
+| `maintainer experience` | `bfdadc` | Improves project maintenance workflow                 |

@@ -1,8 +1,8 @@
-# linkora-sdk
+# Kovara-sdk
 
-Typed TypeScript client for `LinkoraContract`, generated from the compiled contract WASM using `stellar contract bindings typescript`.
+Typed TypeScript client for `KovaraContract`, generated from the compiled contract WASM using `stellar contract bindings typescript`.
 
-**npm**: [`linkora-sdk`](https://www.npmjs.com/package/linkora-sdk)
+**npm**: [`Kovara-sdk`](https://www.npmjs.com/package/Kovara-sdk)
 
 ## Quick Start
 
@@ -10,22 +10,22 @@ Typed TypeScript client for `LinkoraContract`, generated from the compiled contr
 
 ```bash
 # npm
-npm install linkora-sdk
+npm install Kovara-sdk
 
 # pnpm
-pnpm add linkora-sdk
+pnpm add Kovara-sdk
 
 # yarn
-yarn add linkora-sdk
+yarn add Kovara-sdk
 ```
 
 ### 2. Instantiate the client
 
 ```ts
-import { Client } from "linkora-sdk";
+import { Client } from "Kovara-sdk";
 
 const client = new Client({
-  contractId: "C...", // deployed LinkoraContract address
+  contractId: "C...", // deployed KovaraContract address
   networkPassphrase: "Test SDF Network ; September 2015",
   rpcUrl: "https://soroban-testnet.stellar.org",
 });
@@ -40,7 +40,7 @@ console.log(post.result);
 
 // Create a post (requires auth)
 const tx = await client.create_post(
-  { author: keypair.publicKey(), content: "Hello Linkora!" },
+  { author: keypair.publicKey(), content: "Hello Kovara!" },
   { fee: 100 }
 );
 await tx.signAndSend({ signTransaction: keypair.sign.bind(keypair) });

@@ -1,12 +1,14 @@
 # Implementation Summary
 
-This document summarizes the three features implemented for the Linkora smart contract.
+This document summarizes the three features implemented for the Kovara smart contract.
 
 ## Feature 1: Delete Profile Function ✅
+
 **Branch:** `feature/delete-profile`
 **Commit:** 1597714
 
 ### Implementation
+
 - Added `delete_profile(env, user: Address)` function requiring `user.require_auth()`
 - Removes the PROFILES entry for the user
 - Decrements PROF_CT counter correctly
@@ -17,6 +19,7 @@ This document summarizes the three features implemented for the Linkora smart co
 - Emits `ProfileDeletedEvent` with the deleted user address
 
 ### Tests Added
+
 1. `test_delete_profile_success` - Verifies successful deletion and counter decrement
 2. `test_delete_profile_non_existent` - Verifies panic when profile doesn't exist
 3. `test_delete_profile_auth_enforcement` - Verifies authorization requirement
@@ -25,6 +28,7 @@ This document summarizes the three features implemented for the Linkora smart co
 6. `test_delete_profile_bidirectional_cleanup` - Verifies mutual follow cleanup
 
 ### Acceptance Criteria Met
+
 - ✅ `get_profile` returns None after deletion
 - ✅ PROF_CT is decremented correctly
 - ✅ Follow relationships referencing the deleted user are cleaned up
@@ -33,16 +37,19 @@ This document summarizes the three features implemented for the Linkora smart co
 ---
 
 ## Feature 2: Pool Governance Proposal Flow ✅
+
 **Branch:** `feature/pool-governance-proposals`
 **Commit:** 720854d
 
 ### Implementation
+
 - Added `Proposal` data structure with fields:
   - id, pool_id, proposer, amount, recipient, signers, status
 - Added `ProposalStatus` enum (Pending, Executed)
 - Added storage keys: PROPOSALS, PROPOSAL_CT
 
 #### Functions Added
+
 1. **`propose_withdrawal(proposer, pool_id, amount, recipient) -> u64`**
    - Verifies proposer is a pool admin
    - Creates a pending proposal
@@ -67,6 +74,7 @@ This document summarizes the three features implemented for the Linkora smart co
    - Returns proposal details for querying
 
 ### Tests Added
+
 1. `test_propose_withdrawal_success` - Verifies proposal creation
 2. `test_propose_withdrawal_non_admin` - Verifies only admins can propose
 3. `test_sign_proposal_success` - Verifies signing mechanism
@@ -79,6 +87,7 @@ This document summarizes the three features implemented for the Linkora smart co
 10. `test_proposal_async_signing` - Verifies async signing workflow
 
 ### Acceptance Criteria Met
+
 - ✅ Proposals can be signed asynchronously by different admins
 - ✅ Execution fails if threshold is not met
 - ✅ Executed proposals cannot be re-executed
@@ -87,11 +96,14 @@ This document summarizes the three features implemented for the Linkora smart co
 ---
 
 ## Feature 3: Test Blocked Tipper ✅
+
 **Branch:** `feature/test-blocked-tipper`
 **Commit:** 83fcd8c
 
 ### Implementation
+
 The `tip` function already had the blocking logic implemented:
+
 ```rust
 if Self::is_blocked(env.clone(), post.author.clone(), tipper.clone()) {
     panic!("blocked");
@@ -101,11 +113,13 @@ if Self::is_blocked(env.clone(), post.author.clone(), tipper.clone()) {
 This feature adds comprehensive test coverage for this existing functionality.
 
 ### Tests Added
+
 1. **`test_tip_blocked_by_author`** - Verifies tip panics with "blocked" when author blocks tipper
 2. **`test_tip_after_unblock`** - Verifies tip succeeds after author unblocks tipper
 3. **`test_tip_non_blocked_user`** - Verifies non-blocked users can tip normally
 
 ### Acceptance Criteria Met
+
 - ✅ Test: author blocks tipper; tip call panics with "blocked"
 - ✅ Test: author unblocks tipper; subsequent tip call succeeds
 - ✅ Test: tip from a non-blocked address succeeds normally
@@ -122,6 +136,7 @@ All three features have been successfully implemented in separate branches:
 3. **feature/test-blocked-tipper** - Comprehensive test coverage for block-on-tip
 
 Each feature:
+
 - ✅ Was implemented in its own branch
 - ✅ Includes comprehensive tests
 - ✅ Meets all acceptance criteria
@@ -131,6 +146,7 @@ Each feature:
 ## Next Steps
 
 To integrate these features:
+
 1. Review each branch individually
 2. Run `cargo test` on each branch to verify all tests pass
 3. Merge branches to main after review
@@ -142,13 +158,13 @@ To integrate these features:
 ```bash
 # Test Feature 1
 git checkout feature/delete-profile
-cargo test --manifest-path packages/contracts/contracts/linkora-contracts/Cargo.toml
+cargo test --manifest-path packages/contracts/contracts/Kovara-contracts/Cargo.toml
 
 # Test Feature 2
 git checkout feature/pool-governance-proposals
-cargo test --manifest-path packages/contracts/contracts/linkora-contracts/Cargo.toml
+cargo test --manifest-path packages/contracts/contracts/Kovara-contracts/Cargo.toml
 
 # Test Feature 3
 git checkout feature/test-blocked-tipper
-cargo test --manifest-path packages/contracts/contracts/linkora-contracts/Cargo.toml
+cargo test --manifest-path packages/contracts/contracts/Kovara-contracts/Cargo.toml
 ```

@@ -6,8 +6,8 @@ import { ConnectWallet } from "./components/ConnectWallet";
 import { NotificationProvider } from "./context/NotificationContext";
 
 export const metadata: Metadata = {
-  title: "Linkora Web",
-  description: "Web frontend scaffold for Linkora Social",
+  title: "Kovara Web",
+  description: "Web frontend scaffold for Kovara Social",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -18,11 +18,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <WalletProvider>
             <nav style={navStyles}>
               <div style={navContainer}>
-                <a href="/" style={logo}>Linkora</a>
+                <a href="/" style={logo}>
+                  Kovara
+                </a>
                 <div style={navLinks}>
-                  <a href="/feed" style={navLink}>Feed</a>
-                  <a href="/explore" style={navLink}>Explore</a>
-                  <a href="/pools" style={navLink}>Pools</a>
+                  <a href="/feed" style={navLink}>
+                    Feed
+                  </a>
+                  <a href="/explore" style={navLink}>
+                    Explore
+                  </a>
+                  <a href="/pools" style={navLink}>
+                    Pools
+                  </a>
                   <ConnectWallet />
                 </div>
               </div>

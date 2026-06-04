@@ -1,21 +1,21 @@
-# LinkoraContract Security Review
+# KovaraContract Security Review
 
-**Contract:** `packages/contracts/contracts/linkora-contracts/src/lib.rs`  
+**Contract:** `packages/contracts/contracts/Kovara-contracts/src/lib.rs`  
 **Review Date:** 2025-05-26  
 **Reviewer:** Community security review (open-source week)  
-**Scope:** Full review of `LinkoraContract` — profiles, social graph, posts, reactions, tipping, community pools, upgradability.
+**Scope:** Full review of `KovaraContract` — profiles, social graph, posts, reactions, tipping, community pools, upgradability.
 
 ---
 
 ## Summary
 
-| Severity | Count |
-|----------|-------|
-| Critical | 0 |
-| High | 1 |
-| Medium | 3 |
-| Low | 3 |
-| Informational | 3 |
+| Severity      | Count |
+| ------------- | ----- |
+| Critical      | 0     |
+| High          | 1     |
+| Medium        | 3     |
+| Low           | 3     |
+| Informational | 3     |
 
 No critical vulnerabilities were identified. One high-severity finding relates to integer overflow in the fee calculation path. The remaining findings are medium or lower severity.
 
@@ -142,7 +142,7 @@ The same issue applies to `add_pool_admin`, `remove_pool_admin`, and `update_poo
 **Location:** `lib.rs`, lines ~38–39  
 **Severity:** Low
 
-**Description:**  
+**Description:**
 
 ```rust
 const LEDGER_BUMP: u32 = 535_000;

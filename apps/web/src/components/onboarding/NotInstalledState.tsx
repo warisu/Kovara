@@ -6,8 +6,8 @@ export function NotInstalledState() {
       <div>
         <h2 className="text-2xl font-bold mb-2">Freighter Wallet Required</h2>
         <p className="text-[var(--text-muted)] max-w-xs">
-          Linkora uses Freighter to sign transactions on Stellar. Install the
-          browser extension to get started.
+          Kovara uses Freighter to sign transactions on Stellar. Install the browser extension to
+          get started.
         </p>
       </div>
       <a
@@ -18,9 +18,7 @@ export function NotInstalledState() {
       >
         Install Freighter
       </a>
-      <p className="text-xs text-[var(--text-muted)]">
-        After installing, refresh this page.
-      </p>
+      <p className="text-xs text-[var(--text-muted)]">After installing, refresh this page.</p>
     </div>
   );
 }

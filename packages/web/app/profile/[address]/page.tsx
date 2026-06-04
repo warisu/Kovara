@@ -60,12 +60,8 @@ function FollowButton({
       <button
         onClick={onUnfollow}
         style={{ ...styles.followBtn, ...styles.followingBtn }}
-        onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLButtonElement).textContent = "Unfollow")
-        }
-        onMouseLeave={(e) =>
-          ((e.currentTarget as HTMLButtonElement).textContent = "Following")
-        }
+        onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).textContent = "Unfollow")}
+        onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).textContent = "Following")}
       >
         Following
       </button>
@@ -89,12 +85,7 @@ function CopyButton({ text }: { text: string }) {
   };
 
   return (
-    <button
-      onClick={handleCopy}
-      style={styles.copyBtn}
-      aria-label="Copy address"
-      title={text}
-    >
+    <button onClick={handleCopy} style={styles.copyBtn} aria-label="Copy address" title={text}>
       {copied ? "✓" : "⎘"}
     </button>
   );
@@ -151,11 +142,7 @@ function ProfileHeader({
       </div>
       {!isOwnProfile && (
         <div style={styles.actions}>
-          <FollowButton
-            state={followState}
-            onFollow={onFollow}
-            onUnfollow={onUnfollow}
-          />
+          <FollowButton state={followState} onFollow={onFollow} onUnfollow={onUnfollow} />
         </div>
       )}
     </section>
@@ -166,8 +153,7 @@ export default function ProfilePage() {
   const params = useParams();
   const address = params?.address as string;
 
-  const isOwnProfile =
-    MOCK_CURRENT_USER !== "" && MOCK_CURRENT_USER === address;
+  const isOwnProfile = MOCK_CURRENT_USER !== "" && MOCK_CURRENT_USER === address;
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -204,7 +190,7 @@ export default function ProfilePage() {
           author: address,
           username: "creator_alice",
           content:
-            "Just launched my creator token on Linkora! 🎉 Excited to build something real here.",
+            "Just launched my creator token on Kovara! 🎉 Excited to build something real here.",
           tip_total: 120_000_000,
           timestamp: Date.now() / 1000 - 7200,
           like_count: 31,
@@ -213,8 +199,7 @@ export default function ProfilePage() {
           id: 2,
           author: address,
           username: "creator_alice",
-          content:
-            "The Stellar network makes micropayments actually viable for creator economies.",
+          content: "The Stellar network makes micropayments actually viable for creator economies.",
           tip_total: 45_000_000,
           timestamp: Date.now() / 1000 - 86_400,
           like_count: 18,
@@ -249,11 +234,11 @@ export default function ProfilePage() {
                 ...p,
                 like_count: p.like_count + (likedPosts.has(postId) ? -1 : 1),
               }
-            : p,
-        ),
+            : p
+        )
       );
     },
-    [likedPosts],
+    [likedPosts]
   );
 
   if (loading) {

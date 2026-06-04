@@ -1,6 +1,6 @@
-# Linkora-Social Governance
+# Kovara Governance
 
-This document describes how decisions are made in the Linkora-Social project, how the project is maintained, and how community members can take on greater responsibility.
+This document describes how decisions are made in the Kovara project, how the project is maintained, and how community members can take on greater responsibility.
 
 ## Table of Contents
 
@@ -19,6 +19,7 @@ This document describes how decisions are made in the Linkora-Social project, ho
 Anyone who submits a bug report, feature request, or pull request. Contributors do not require any formal recognition or invitation — opening an issue or PR immediately makes you a contributor.
 
 **Responsibilities:**
+
 - Follow the contributing guidelines in [CONTRIBUTING.md](../CONTRIBUTING.md)
 - Adhere to the [Code of Conduct](#4-code-of-conduct)
 - Respond to review feedback on open PRs in a timely manner
@@ -28,6 +29,7 @@ Anyone who submits a bug report, feature request, or pull request. Contributors 
 A contributor who has demonstrated sustained, high-quality contributions and is invited to review pull requests. Reviewers can approve PRs but cannot merge without a maintainer's final approval.
 
 **Responsibilities:**
+
 - Provide constructive, timely code reviews
 - Flag security concerns or breaking changes before approval
 - Help triage issues and answer community questions
@@ -39,6 +41,7 @@ Maintainers have write access to the repository and are responsible for the long
 **Current Maintainers:** [@Epta-Node](https://github.com/Epta-Node)
 
 **Responsibilities:**
+
 - Review and merge approved pull requests
 - Enforce branch protection and CI requirements
 - Manage the release process (see `CONTRIBUTING.md` § Release Process)
@@ -89,9 +92,10 @@ There is no fixed timeline or point system. Maintainers are invited based on dem
 - Multiple merged PRs of increasing complexity
 - High-quality, constructive code reviews
 - Active participation in issue triage or community support
-- Understanding of Soroban smart contract security and the Linkora data model
+- Understanding of Soroban smart contract security and the Kovara data model
 
 **Process:**
+
 1. A current maintainer nominates the candidate in the private maintainer channel.
 2. All current maintainers discuss and vote (simple majority, 5-day window).
 3. If approved, the candidate is offered write access and added to `CODEOWNERS`.
@@ -103,7 +107,7 @@ Maintainer status is voluntary. A maintainer who is no longer active may step do
 
 ## 4. Code of Conduct
 
-All participants in the Linkora-Social community — including contributors, reviewers, maintainers, and anyone engaging in the project's issue tracker, pull requests, or communication channels — are expected to follow the project Code of Conduct.
+All participants in the Kovara community — including contributors, reviewers, maintainers, and anyone engaging in the project's issue tracker, pull requests, or communication channels — are expected to follow the project Code of Conduct.
 
 The full Code of Conduct is available at [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) (if not yet present, the [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) applies by default).
 
@@ -113,10 +117,10 @@ The full Code of Conduct is available at [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT
 
 ## 5. Communication Channels
 
-| Channel | Purpose |
-|---------|---------|
-| [GitHub Issues](https://github.com/Epta-Node/Linkora-social/issues) | Bug reports, feature requests, and formal proposals |
-| [GitHub Discussions](https://github.com/Epta-Node/Linkora-social/discussions) | Open-ended questions and community conversation |
-| [Telegram Community](https://t.me/+13csp8G4ccRhY2Zk) | Real-time discussion, announcements, and breaking-change notices |
+| Channel                                                               | Purpose                                                          |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [GitHub Issues](https://github.com/Epta-Node/Kovara/issues)           | Bug reports, feature requests, and formal proposals              |
+| [GitHub Discussions](https://github.com/Epta-Node/Kovara/discussions) | Open-ended questions and community conversation                  |
+| [Telegram Community](https://t.me/+13csp8G4ccRhY2Zk)                  | Real-time discussion, announcements, and breaking-change notices |
 
 For security disclosures, see [SECURITY.md](../SECURITY.md) — do not use public channels for vulnerability reports.

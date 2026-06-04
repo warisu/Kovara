@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-command local development setup for Linkora-social.
+# One-command local development setup for Kovara.
 # Safe to run multiple times (idempotent).
 #
 # Usage:

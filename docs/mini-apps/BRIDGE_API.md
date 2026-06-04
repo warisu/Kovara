@@ -18,14 +18,15 @@
   - The data is read‑only – mini‑apps cannot modify the returned object.
 - **Usage Example:**
   ```js
-  const profile = await LinkoraSDK.profile.get();
+  const profile = await KovaraSDK.profile.get();
   if (profile) {
-    console.log('Address:', profile.address);
-    console.log('Token:', profile.creatorToken);
+    console.log("Address:", profile.address);
+    console.log("Token:", profile.creatorToken);
   } else {
-    console.log('No wallet connected');
+    console.log("No wallet connected");
   }
   ```
 
 ## Other Bridge Methods
+
 (Existing methods such as `wallet.getAddress`, `wallet.sign`, etc., remain unchanged.)

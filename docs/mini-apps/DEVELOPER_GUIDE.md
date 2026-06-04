@@ -1,13 +1,13 @@
-# Linkora Mini Apps — Developer Guide
+# Kovara Mini Apps — Developer Guide
 
 > **Bridge API reference:** [`BRIDGE_API.md`](./BRIDGE_API.md)
 > **Example mini app:** [`examples/mini-apps/creator-token/`](../../examples/mini-apps/creator-token/)
 
 ---
 
-## What is a Linkora Mini App?
+## What is a Kovara Mini App?
 
-A Linkora mini app is a sandboxed web application (HTML + JS) that runs inside the Linkora mobile client. It can access the user's Stellar wallet and Linkora profile through a controlled bridge API — without ever seeing the user's private key.
+A Kovara mini app is a sandboxed web application (HTML + JS) that runs inside the Kovara mobile client. It can access the user's Stellar wallet and Kovara profile through a controlled bridge API — without ever seeing the user's private key.
 
 Mini apps are useful for:
 
@@ -16,13 +16,13 @@ Mini apps are useful for:
 - Custom reward or loyalty mechanics
 - Any on-chain interaction that benefits from a native-feeling UI
 
-The host app enforces a permission model: a mini app can only call bridge methods it has explicitly declared in its `linkora-manifest.json`. Any undeclared call is rejected with a `PermissionDenied` error before it reaches the wallet.
+The host app enforces a permission model: a mini app can only call bridge methods it has explicitly declared in its `Kovara-manifest.json`. Any undeclared call is rejected with a `PermissionDenied` error before it reaches the wallet.
 
 ---
 
-## Creating a `linkora-manifest.json`
+## Creating a `Kovara-manifest.json`
 
-Every mini app must include a `linkora-manifest.json` at its root. This file tells the Linkora host app how to load your mini app and which bridge permissions it needs.
+Every mini app must include a `Kovara-manifest.json` at its root. This file tells the Kovara host app how to load your mini app and which bridge permissions it needs.
 
 ```json
 {
@@ -30,11 +30,7 @@ Every mini app must include a `linkora-manifest.json` at its root. This file tel
   "version": "1.0.0",
   "description": "A short description shown in the mini app browser.",
   "entry": "index.html",
-  "permissions": [
-    "wallet.getAddress",
-    "wallet.signTransaction",
-    "profile.get"
-  ],
+  "permissions": ["wallet.getAddress", "wallet.signTransaction", "profile.get"],
   "author": "Your Name or Org",
   "homepage": "https://github.com/your-org/your-mini-app",
   "categories": ["creator", "payments"],
@@ -44,17 +40,17 @@ Every mini app must include a `linkora-manifest.json` at its root. This file tel
 
 ### Fields
 
-| Field | Required | Description |
-|---|---|---|
-| `name` | ✅ | Display name shown in the mini app browser |
-| `version` | ✅ | Semver string (e.g. `"1.0.0"`) |
-| `description` | ✅ | One-line description |
-| `entry` | ✅ | Relative path to the HTML entry point |
-| `permissions` | ✅ | Array of bridge methods your app will call (see [Bridge API](./BRIDGE_API.md)) |
-| `author` | ✅ | Author name or organisation |
-| `homepage` | — | URL to source or docs |
-| `categories` | — | Array of category strings for discovery |
-| `minSdkVersion` | — | Minimum Linkora SDK version required |
+| Field           | Required | Description                                                                    |
+| --------------- | -------- | ------------------------------------------------------------------------------ |
+| `name`          | ✅       | Display name shown in the mini app browser                                     |
+| `version`       | ✅       | Semver string (e.g. `"1.0.0"`)                                                 |
+| `description`   | ✅       | One-line description                                                           |
+| `entry`         | ✅       | Relative path to the HTML entry point                                          |
+| `permissions`   | ✅       | Array of bridge methods your app will call (see [Bridge API](./BRIDGE_API.md)) |
+| `author`        | ✅       | Author name or organisation                                                    |
+| `homepage`      | —        | URL to source or docs                                                          |
+| `categories`    | —        | Array of category strings for discovery                                        |
+| `minSdkVersion` | —        | Minimum Kovara SDK version required                                            |
 
 > Only request permissions your app actually uses. Users see the permission list before launching a mini app.
 
@@ -62,14 +58,14 @@ Every mini app must include a `linkora-manifest.json` at its root. This file tel
 
 ## Available Bridge APIs and Permissions
 
-The bridge is injected as `window.LinkoraSDK` when your app runs inside the Linkora host. Each method requires the matching permission string in your manifest.
+The bridge is injected as `window.KovaraSDK` when your app runs inside the Kovara host. Each method requires the matching permission string in your manifest.
 
-| Permission | Method | Description |
-|---|---|---|
-| `wallet.getAddress` | `LinkoraSDK.wallet.getAddress()` | Returns the connected Stellar address |
-| `wallet.sign` | `LinkoraSDK.wallet.sign(payload)` | Signs an arbitrary payload — prompts user approval |
-| `wallet.signTransaction` | `LinkoraSDK.wallet.signTransaction(txXdr)` | Signs a Stellar XDR transaction — prompts user approval |
-| `profile.get` | `LinkoraSDK.profile.get()` | Returns the user's Linkora profile |
+| Permission               | Method                                    | Description                                             |
+| ------------------------ | ----------------------------------------- | ------------------------------------------------------- |
+| `wallet.getAddress`      | `KovaraSDK.wallet.getAddress()`           | Returns the connected Stellar address                   |
+| `wallet.sign`            | `KovaraSDK.wallet.sign(payload)`          | Signs an arbitrary payload — prompts user approval      |
+| `wallet.signTransaction` | `KovaraSDK.wallet.signTransaction(txXdr)` | Signs a Stellar XDR transaction — prompts user approval |
+| `profile.get`            | `KovaraSDK.profile.get()`                 | Returns the user's Kovara profile                       |
 
 Full method signatures, parameters, return types, and error codes are documented in [`BRIDGE_API.md`](./BRIDGE_API.md).
 
@@ -81,15 +77,15 @@ Full method signatures, parameters, return types, and error codes are documented
 
 ```
 my-mini-app/
-├── linkora-manifest.json
+├── Kovara-manifest.json
 └── index.html
 ```
 
-### 2. Write `linkora-manifest.json`
+### 2. Write `Kovara-manifest.json`
 
 ```json
 {
-  "name": "Hello Linkora",
+  "name": "Hello Kovara",
   "version": "1.0.0",
   "description": "Shows the connected wallet address.",
   "entry": "index.html",
@@ -107,16 +103,17 @@ my-mini-app/
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello Linkora</title>
+    <title>Hello Kovara</title>
   </head>
   <body>
     <h1>Your address</h1>
     <p id="address">Loading…</p>
 
     <script>
-      const SDK = window.LinkoraSDK;
+      const SDK = window.KovaraSDK;
 
-      SDK.wallet.getAddress()
+      SDK.wallet
+        .getAddress()
         .then((address) => {
           document.getElementById("address").textContent = address;
         })
@@ -134,10 +131,10 @@ my-mini-app/
 
 ### Option A — Mock SDK in the browser
 
-When running outside the Linkora host, `window.LinkoraSDK` is `undefined`. Add a mock at the top of your script for local development:
+When running outside the Kovara host, `window.KovaraSDK` is `undefined`. Add a mock at the top of your script for local development:
 
 ```js
-const SDK = window.LinkoraSDK || {
+const SDK = window.KovaraSDK || {
   wallet: {
     getAddress: async () => "GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN",
     sign: async (payload) => ({ signature: "mock-sig" }),
@@ -147,7 +144,10 @@ const SDK = window.LinkoraSDK || {
     get: async () => ({
       username: "testuser",
       address: "GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN",
-      creatorToken: { code: "TEST", issuer: "GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN" },
+      creatorToken: {
+        code: "TEST",
+        issuer: "GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN",
+      },
     }),
   },
 };
@@ -163,9 +163,9 @@ python3 -m http.server 8080
 
 Open `http://localhost:8080` in your browser.
 
-### Option B — Load in the Linkora dev build
+### Option B — Load in the Kovara dev build
 
-1. Clone the Linkora repo and run the mobile app in development mode.
+1. Clone the Kovara repo and run the mobile app in development mode.
 2. Place your mini app folder under `examples/mini-apps/your-app/`.
 3. The mini app browser will pick it up automatically from the local filesystem.
 
@@ -177,20 +177,20 @@ If you call a method not listed in your `permissions` array, the bridge throws:
 BridgeError { code: "PermissionDenied", message: "Mini app has not declared wallet.signTransaction" }
 ```
 
-Add the missing permission to `linkora-manifest.json` and reload.
+Add the missing permission to `Kovara-manifest.json` and reload.
 
 ---
 
 ## Submitting to the Mini App Registry
 
 1. **Host your mini app** — deploy to any static host (GitHub Pages, Vercel, IPFS, etc.).
-2. **Verify your manifest** — ensure `linkora-manifest.json` is served at the root of your deployment URL.
-3. **Open a submission PR** — add an entry to `registry/mini-apps.json` in the Linkora repo:
+2. **Verify your manifest** — ensure `Kovara-manifest.json` is served at the root of your deployment URL.
+3. **Open a submission PR** — add an entry to `registry/mini-apps.json` in the Kovara repo:
 
 ```json
 {
   "name": "My Mini App",
-  "manifestUrl": "https://your-host.example/linkora-manifest.json",
+  "manifestUrl": "https://your-host.example/Kovara-manifest.json",
   "author": "your-github-username"
 }
 ```
@@ -202,7 +202,7 @@ Add the missing permission to `linkora-manifest.json` and reload.
    - [ ] `minSdkVersion` is set correctly
    - [ ] `description` is clear and accurate
 
-5. A maintainer will review and merge. Once merged, your app appears in the Linkora mini app browser on the next release.
+5. A maintainer will review and merge. Once merged, your app appears in the Kovara mini app browser on the next release.
 
 ---
 
@@ -219,6 +219,6 @@ Add the missing permission to `linkora-manifest.json` and reload.
 
 - [Bridge API Reference](./BRIDGE_API.md)
 - [Example: Creator Token mini app](../../examples/mini-apps/creator-token/)
-- [Linkora Contract API](../../README.md#smart-contract-overview)
+- [Kovara Contract API](../../README.md#smart-contract-overview)
 - [Stellar Testnet Friendbot](https://friendbot.stellar.org)
 - [Stellar Horizon Testnet](https://horizon-testnet.stellar.org)

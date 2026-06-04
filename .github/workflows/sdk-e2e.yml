@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       contract_id:
-        description: 'Contract ID to test against (optional)'
+        description: "Contract ID to test against (optional)"
         required: false
         type: string
 
@@ -37,7 +37,7 @@ jobs:
         working-directory: packages/sdk
         env:
           TESTNET_SECRET_KEY: ${{ secrets.TESTNET_SECRET_KEY }}
-          LINKORA_CONTRACT_ID: ${{ github.event.inputs.contract_id || 'CDLDVFKHEZ2RVB3NG4UQA4VPD3TSHV6XMHXMHP2BSGCJ2IIWVTOHGDSG' }}
+          Kovara_CONTRACT_ID: ${{ github.event.inputs.contract_id || 'CDLDVFKHEZ2RVB3NG4UQA4VPD3TSHV6XMHXMHP2BSGCJ2IIWVTOHGDSG' }}
         run: pnpm test:e2e
 
       - name: Upload test results

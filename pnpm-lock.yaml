@@ -192,7 +192,7 @@ importers:
 
   packages/web:
     dependencies:
-      linkora-sdk:
+      Kovara-sdk:
         specifier: workspace:*
         version: link:../sdk
       next:

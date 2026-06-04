@@ -10,12 +10,12 @@ export interface FollowUser {
 async function fetchFollowersPage(
   address: string,
   offset: number,
-  limit: number,
+  limit: number
 ): Promise<FollowUser[]> {
   const ALL_FOLLOWERS: FollowUser[] = [
     { address: "GABCD1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "stellar_dev" },
     { address: "GXYZ9876543210ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "crypto_enthusiast" },
-    { address: "GDEF5678901234ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "linkora_fan" },
+    { address: "GDEF5678901234ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "Kovara_fan" },
     { address: "GHIJ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "soroban_builder" },
     { address: "GKLM5678901234ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "defi_explorer" },
     { address: "GNOP1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "nft_collector" },
@@ -67,7 +67,7 @@ export function useFollowers(address: string): UseFollowersReturn {
         loadingRef.current = false;
       }
     },
-    [address],
+    [address]
   );
 
   useEffect(() => {

@@ -1,6 +1,6 @@
-# Linkora Contract Events Schema
+# Kovara Contract Events Schema
 
-This document defines the on-chain event schema for the Linkora smart contract, enabling indexers to track state changes and engagement signals.
+This document defines the on-chain event schema for the Kovara smart contract, enabling indexers to track state changes and engagement signals.
 
 ## Event Versioning
 
@@ -11,14 +11,17 @@ All events are currently `v1`. Breaking schema changes will bump the major versi
 ## ProfileSetEvent (v1)
 
 **Topics:**
+
 - `user: Address` (indexed)
 
 **Data:**
+
 - `username: String`
 
 **Emitted by:** `set_profile()`
 
 **Example filter:**
+
 ```bash
 stellar events --topic-filter 'user' --contract-id <contract-addr>
 ```
@@ -28,6 +31,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 ## FollowEvent (v1)
 
 **Topics:**
+
 - `follower: Address` (indexed)
 - `followee: Address` (indexed)
 
@@ -38,6 +42,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 ## UnfollowEvent (v1)
 
 **Topics:**
+
 - `follower: Address` (indexed)
 - `followee: Address` (indexed)
 
@@ -48,6 +53,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 ## PostCreatedEvent (v1)
 
 **Topics:**
+
 - `id: u64` (indexed)
 - `author: Address` (indexed)
 
@@ -58,6 +64,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 ## PostDeleted (v1)
 
 **Topics:**
+
 - `post_id: u64` (indexed)
 - `author: Address` (indexed)
 
@@ -68,6 +75,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 ## LikePostEvent (v1)
 
 **Topics:**
+
 - `user: Address` (indexed)
 - `post_id: u64` (indexed)
 
@@ -76,6 +84,7 @@ stellar events --topic-filter 'user' --contract-id <contract-addr>
 **Behavior:** Emitted only on the first like; duplicate likes (idempotent calls) do not emit an event.
 
 **Example filter:**
+
 ```bash
 stellar events --topic-filter 'user,post_id' --contract-id <contract-addr>
 ```
@@ -85,10 +94,12 @@ stellar events --topic-filter 'user,post_id' --contract-id <contract-addr>
 ## TipEvent (v1)
 
 **Topics:**
+
 - `tipper: Address` (indexed)
 - `post_id: u64` (indexed)
 
 **Data:**
+
 - `amount: i128` (tip amount in smallest units)
 - `fee: i128` (fee retained by treasury)
 
@@ -99,15 +110,18 @@ stellar events --topic-filter 'user,post_id' --contract-id <contract-addr>
 ## PoolDepositEvent (v1)
 
 **Topics:**
+
 - `depositor: Address` (indexed)
 - `pool_id: Symbol` (indexed)
 
 **Data:**
+
 - `amount: i128` (deposit amount in smallest units)
 
 **Emitted by:** `pool_deposit()`
 
 **Example filter:**
+
 ```bash
 stellar events --topic-filter 'pool_id' --data-filter 'amount' --contract-id <contract-addr>
 ```
@@ -117,15 +131,18 @@ stellar events --topic-filter 'pool_id' --data-filter 'amount' --contract-id <co
 ## PoolWithdrawEvent (v1)
 
 **Topics:**
+
 - `recipient: Address` (indexed)
 - `pool_id: Symbol` (indexed)
 
 **Data:**
+
 - `amount: i128` (withdrawal amount in smallest units)
 
 **Emitted by:** `pool_withdraw()`
 
 **Example filter:**
+
 ```bash
 stellar events --topic-filter 'pool_id' --contract-id <contract-addr>
 ```
@@ -135,6 +152,7 @@ stellar events --topic-filter 'pool_id' --contract-id <contract-addr>
 ## ContractUpgraded (v1)
 
 **Data:**
+
 - `new_wasm_hash: BytesN<32>`
 
 **Emitted by:** `upgrade()`

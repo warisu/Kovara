@@ -25,15 +25,15 @@ and this project follows semantic versioning for contract and SDK releases.
 
 ### Added
 
-- Initial publication of `linkora-sdk` to npm (`https://www.npmjs.com/package/linkora-sdk`).
-- TypeScript SDK with complete bindings for `LinkoraContract` on Stellar Soroban.
+- Initial publication of `Kovara-sdk` to npm (`https://www.npmjs.com/package/Kovara-sdk`).
+- TypeScript SDK with complete bindings for `KovaraContract` on Stellar Soroban.
 - Automated GitHub Actions workflow for SDK releases triggered by `sdk/v*` tags (closes #311).
 - Comprehensive npm package configuration with proper types and exports for TypeScript consumers.
 - SDK documentation with quick-start examples, API reference, and regeneration instructions.
 
 ### Changed
 
-- SDK `package.json` now properly configured for npm distribution with `linkora-sdk` package name.
+- SDK `package.json` now properly configured for npm distribution with `Kovara-sdk` package name.
 - SDK README updated with npm installation instructions for npm, pnpm, and yarn.
 - SDK build script now outputs compiled JavaScript and type declarations to `dist/` for distribution.
 
@@ -57,7 +57,7 @@ and this project follows semantic versioning for contract and SDK releases.
 
 ### Added
 
-- `LinkoraContract` initial public interface for profile registration, follow graph, post publishing, tipping, and pools.
+- `KovaraContract` initial public interface for profile registration, follow graph, post publishing, tipping, and pools.
 - Admin-controlled protocol fee configuration via `set_fee`, `set_treasury`, `get_fee_bps`, and `get_treasury`.
 - Blocking and post-like primitives (`block_user`, `unblock_user`, `is_blocked`, `like_post`, `get_like_count`, `has_liked`).
 - Safer error messages for missing entities in `tip`, `delete_post`, and `pool_withdraw`.
@@ -66,4 +66,4 @@ and this project follows semantic versioning for contract and SDK releases.
 ### Changed
 
 - `tip` now supports protocol fee split between author and treasury.
-- Contract crate version aligned to `0.1.0` in `packages/contracts/contracts/linkora-contracts/Cargo.toml`.
+- Contract crate version aligned to `0.1.0` in `packages/contracts/contracts/Kovara-contracts/Cargo.toml`.

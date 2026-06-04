@@ -21,70 +21,70 @@ The design implementation successfully fulfills all functional and aesthetic req
 
 ### 2.1 Global Layout Shell ✅
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Header with Linkora logo | ✅ | SVG logo with gradient (coral→teal) matches spec |
-| Network badge (Testnet/Mainnet) | ✅ | Testnet badge visible, mainnet variant defined |
-| Wallet connect/connected state | ✅ | Both states implemented with avatar + truncated address |
-| Navigation: Feed, Explore, Pools, My Profile | ✅ | All 4 nav items present |
-| Vertical sidebar (240px) | ✅ | Fixed sidebar with coral active border |
-| Bottom tab bar (mobile) | ✅ | 56px height, icons + labels |
-| Max-width content container (640px) | ✅ | Properly centered in viewport |
-| Skeleton loaders | ✅ | Shimmer animation with correct colors |
+| Requirement                                  | Status | Notes                                                   |
+| -------------------------------------------- | ------ | ------------------------------------------------------- |
+| Header with Kovara logo                      | ✅     | SVG logo with gradient (coral→teal) matches spec        |
+| Network badge (Testnet/Mainnet)              | ✅     | Testnet badge visible, mainnet variant defined          |
+| Wallet connect/connected state               | ✅     | Both states implemented with avatar + truncated address |
+| Navigation: Feed, Explore, Pools, My Profile | ✅     | All 4 nav items present                                 |
+| Vertical sidebar (240px)                     | ✅     | Fixed sidebar with coral active border                  |
+| Bottom tab bar (mobile)                      | ✅     | 56px height, icons + labels                             |
+| Max-width content container (640px)          | ✅     | Properly centered in viewport                           |
+| Skeleton loaders                             | ✅     | Shimmer animation with correct colors                   |
 
 ### 2.2 Tipping Flow ✅
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Tip button on post card | ✅ | Coral button with hover lift effect |
-| Tip modal (desktop) | ✅ | 420px centered modal with backdrop blur |
-| Token selector with balance | ✅ | Shows XLM balance and USD equivalent |
-| Amount input with MAX button | ✅ | Input with unit label and MAX action |
-| Fee breakdown | ✅ | Shows gross, fee deduction, net to author |
-| Mobile bottom sheet variant | ✅ | Slide-up with drag handle, safe-area padding |
-| Transaction states (idle→await→submit→success/fail) | ✅ | All 5 states implemented |
+| Requirement                                         | Status | Notes                                        |
+| --------------------------------------------------- | ------ | -------------------------------------------- |
+| Tip button on post card                             | ✅     | Coral button with hover lift effect          |
+| Tip modal (desktop)                                 | ✅     | 420px centered modal with backdrop blur      |
+| Token selector with balance                         | ✅     | Shows XLM balance and USD equivalent         |
+| Amount input with MAX button                        | ✅     | Input with unit label and MAX action         |
+| Fee breakdown                                       | ✅     | Shows gross, fee deduction, net to author    |
+| Mobile bottom sheet variant                         | ✅     | Slide-up with drag handle, safe-area padding |
+| Transaction states (idle→await→submit→success/fail) | ✅     | All 5 states implemented                     |
 
 ### 2.3 Transaction Components ✅
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Awaiting signature state | ✅ | Spinner + "Check Freighter" instruction |
-| Submitting state | ✅ | Progress indicator with message |
-| Success state | ✅ | Green check, tx hash link to Stellar Expert |
-| Failed state | ✅ | Red X, error message, retry button |
-| Toast notifications | ✅ | Slide-in animation, auto-dismiss 5s |
+| Requirement              | Status | Notes                                       |
+| ------------------------ | ------ | ------------------------------------------- |
+| Awaiting signature state | ✅     | Spinner + "Check Freighter" instruction     |
+| Submitting state         | ✅     | Progress indicator with message             |
+| Success state            | ✅     | Green check, tx hash link to Stellar Expert |
+| Failed state             | ✅     | Red X, error message, retry button          |
+| Toast notifications      | ✅     | Slide-in animation, auto-dismiss 5s         |
 
 ### 2.4 Aesthetic Direction ✅
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Dark theme (#0D0D12 → #1A1A23) | ✅ | Colors match spec exactly |
-| Coral accent (#FF6B5B) | ✅ | Used for primary actions, active states |
-| Teal accent (#4ECDC4) | ✅ | Used for success, net amount highlight |
-| Typography (Outfit, DM Sans, JetBrains Mono) | ✅ | All 3 font families loaded |
-| Glassmorphism (backdrop-filter) | ✅ | Header and bottom nav |
-| Coral border glow on active | ✅ | Focus-visible and hover states |
-| Hover micro-interactions | ✅ | Scale, lift, color transitions |
-| Skeleton shimmer animation | ✅ | Gradient matches spec colors |
+| Requirement                                  | Status | Notes                                   |
+| -------------------------------------------- | ------ | --------------------------------------- |
+| Dark theme (#0D0D12 → #1A1A23)               | ✅     | Colors match spec exactly               |
+| Coral accent (#FF6B5B)                       | ✅     | Used for primary actions, active states |
+| Teal accent (#4ECDC4)                        | ✅     | Used for success, net amount highlight  |
+| Typography (Outfit, DM Sans, JetBrains Mono) | ✅     | All 3 font families loaded              |
+| Glassmorphism (backdrop-filter)              | ✅     | Header and bottom nav                   |
+| Coral border glow on active                  | ✅     | Focus-visible and hover states          |
+| Hover micro-interactions                     | ✅     | Scale, lift, color transitions          |
+| Skeleton shimmer animation                   | ✅     | Gradient matches spec colors            |
 
 ### 2.5 Responsive Breakpoints ✅
 
-| Breakpoint | Status | Notes |
-|------------|--------|-------|
-| Desktop ≥768px | ✅ | Sidebar visible, header full |
-| Mobile <768px | ✅ | Sidebar hidden, bottom nav shown |
-| Content max-width 640px | ✅ | Proper feed container width |
-| Mobile safe-area insets | ✅ | env(safe-area-inset-bottom) applied |
+| Breakpoint              | Status | Notes                               |
+| ----------------------- | ------ | ----------------------------------- |
+| Desktop ≥768px          | ✅     | Sidebar visible, header full        |
+| Mobile <768px           | ✅     | Sidebar hidden, bottom nav shown    |
+| Content max-width 640px | ✅     | Proper feed container width         |
+| Mobile safe-area insets | ✅     | env(safe-area-inset-bottom) applied |
 
 ### 2.6 Component States ✅
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| Navigation hover/focus/active | ✅ | Scale 1.02, coral accent, focus-ring |
-| Wallet button states | ✅ | Connected state with avatar |
-| Tip button hover | ✅ | Lighter coral, translateY -2px, shadow |
-| Tip button disabled | ✅ | 50% opacity, no pointer |
-| Focus-visible 2px coral | ✅ | Applied to nav items |
+| Requirement                   | Status | Notes                                  |
+| ----------------------------- | ------ | -------------------------------------- |
+| Navigation hover/focus/active | ✅     | Scale 1.02, coral accent, focus-ring   |
+| Wallet button states          | ✅     | Connected state with avatar            |
+| Tip button hover              | ✅     | Lighter coral, translateY -2px, shadow |
+| Tip button disabled           | ✅     | 50% opacity, no pointer                |
+| Focus-visible 2px coral       | ✅     | Applied to nav items                   |
 
 ---
 
@@ -120,12 +120,12 @@ The design implementation successfully fulfills all functional and aesthetic req
 
 ### 4.1 Non-blocking Observations
 
-| Issue | Severity | Recommendation |
-|-------|----------|-------------|
-| Fee breakdown shows "0.1%" instead of "fee_bps%" notation | Low | Brief mentions "fee_bps%" generically; "0.1%" is clearer for users |
-| Transaction hash is placeholder "abc123..." | Low | Expected for mockup; real data requires backend integration |
-| No explicit ESC key handler | Low | Common practice; can add if needed |
-| No keyboard navigation for demo controls | Low | Demo panel not intended for full accessibility |
+| Issue                                                     | Severity | Recommendation                                                     |
+| --------------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| Fee breakdown shows "0.1%" instead of "fee_bps%" notation | Low      | Brief mentions "fee_bps%" generically; "0.1%" is clearer for users |
+| Transaction hash is placeholder "abc123..."               | Low      | Expected for mockup; real data requires backend integration        |
+| No explicit ESC key handler                               | Low      | Common practice; can add if needed                                 |
+| No keyboard navigation for demo controls                  | Low      | Demo panel not intended for full accessibility                     |
 
 ### 4.2 Potential Improvements
 
@@ -148,6 +148,7 @@ The design implementation successfully fulfills all functional and aesthetic req
 ### Overall Score: 9/10
 
 **Strengths**:
+
 - Complete implementation of all 3 component families (layout shell, tipping flow, transaction states)
 - Accurate color palette and typography matching the brief exactly
 - Fully responsive with proper mobile adaptation

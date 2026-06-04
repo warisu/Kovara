@@ -95,7 +95,7 @@ describe("Wallet Connect Integration Tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockSecureStore.__resetStore();
-    globalThis.__LINKORA_WALLET_KIT__ = mockWalletKit;
+    globalThis.__Kovara_WALLET_KIT__ = mockWalletKit;
 
     // Reset wallet kit mocks
     mockWalletKit.connect.mockReset();
@@ -105,7 +105,7 @@ describe("Wallet Connect Integration Tests", () => {
   });
 
   afterEach(() => {
-    delete globalThis.__LINKORA_WALLET_KIT__;
+    delete globalThis.__Kovara_WALLET_KIT__;
   });
 
   describe("Connect Flow", () => {

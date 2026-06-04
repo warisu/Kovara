@@ -1,6 +1,6 @@
-# Linkora Indexer
+# Kovara Indexer
 
-Event indexer for the Linkora Social contract on Stellar. Processes on-chain events and maintains a queryable database for the frontend.
+Event indexer for the Kovara Social contract on Stellar. Processes on-chain events and maintains a queryable database for the frontend.
 
 ## Architecture
 
@@ -108,13 +108,13 @@ docker compose down -v
 
 See [`.env.example`](.env.example) for all required variables.
 
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `STELLAR_RPC_URL` | Soroban RPC endpoint |
-| `CONTRACT_ID` | Deployed Linkora contract address |
-| `START_LEDGER` | Ledger sequence to start indexing from |
-| `PORT` | API port (default: `3000`) |
+| Variable          | Description                            |
+| ----------------- | -------------------------------------- |
+| `DATABASE_URL`    | PostgreSQL connection string           |
+| `STELLAR_RPC_URL` | Soroban RPC endpoint                   |
+| `CONTRACT_ID`     | Deployed Kovara contract address       |
+| `START_LEDGER`    | Ledger sequence to start indexing from |
+| `PORT`            | API port (default: `3000`)             |
 
 ## Manual Setup
 
@@ -201,8 +201,8 @@ curl http://localhost:3000/health
 ### Docker
 
 ```bash
-docker build -t linkora-indexer .
-docker run -p 3000:3000 --env-file .env linkora-indexer
+docker build -t Kovara-indexer .
+docker run -p 3000:3000 --env-file .env Kovara-indexer
 ```
 
 ### Kubernetes

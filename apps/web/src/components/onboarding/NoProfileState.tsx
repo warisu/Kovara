@@ -6,8 +6,8 @@ export function NoProfileState() {
       <div>
         <h2 className="text-2xl font-bold mb-2">Create Your Profile</h2>
         <p className="text-[var(--text-muted)] max-w-xs">
-          Your wallet is connected. Set up your Linkora creator profile to start
-          posting and earning tips.
+          Your wallet is connected. Set up your Kovara creator profile to start posting and earning
+          tips.
         </p>
       </div>
       <a href="/profile/edit" className="btn-primary">

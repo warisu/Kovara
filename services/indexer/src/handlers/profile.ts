@@ -15,7 +15,7 @@ export interface ProfileSetEvent {
 }
 
 /**
- * Handle a ProfileSet event emitted by the Linkora contract.
+ * Handle a ProfileSet event emitted by the Kovara contract.
  *
  * Idempotent: calling this multiple times with the same data produces the
  * same result (upsert semantics).

@@ -3,13 +3,7 @@
 const FRIENDBOT_URL = "https://friendbot.stellar.org";
 
 // State 3a: Connected, zero balance — fund first
-export function FundWalletState({
-  address,
-  onFunded,
-}: {
-  address: string;
-  onFunded: () => void;
-}) {
+export function FundWalletState({ address, onFunded }: { address: string; onFunded: () => void }) {
   async function handleFriendbot() {
     await fetch(`${FRIENDBOT_URL}?addr=${encodeURIComponent(address)}`);
     onFunded();
@@ -21,12 +15,10 @@ export function FundWalletState({
       <div>
         <h2 className="text-2xl font-bold mb-2">Fund Your Testnet Wallet</h2>
         <p className="text-[var(--text-muted)] max-w-xs">
-          Your wallet has no XLM. Use the Friendbot faucet to get testnet funds
-          so you can create a profile and interact with Linkora.
+          Your wallet has no XLM. Use the Friendbot faucet to get testnet funds so you can create a
+          profile and interact with Kovara.
         </p>
-        <p className="mt-3 font-mono text-xs text-[var(--text-muted)] break-all">
-          {address}
-        </p>
+        <p className="mt-3 font-mono text-xs text-[var(--text-muted)] break-all">{address}</p>
       </div>
       <button onClick={handleFriendbot} className="btn-primary">
         Fund with Friendbot

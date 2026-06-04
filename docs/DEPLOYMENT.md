@@ -1,6 +1,6 @@
-# Linkora Deployment Guide
+# Kovara Deployment Guide
 
-This guide covers how to deploy the full Linkora stack — smart contracts, indexer, web app, and mobile app — from scratch on Stellar Testnet or Mainnet.
+This guide covers how to deploy the full Kovara stack — smart contracts, indexer, web app, and mobile app — from scratch on Stellar Testnet or Mainnet.
 
 ---
 
@@ -18,14 +18,14 @@ This guide covers how to deploy the full Linkora stack — smart contracts, inde
 
 ## Prerequisites
 
-| Tool | Minimum version | Install |
-|------|----------------|---------|
-| Rust toolchain | stable | https://rustup.rs |
-| stellar-cli | 22.8.1 | `cargo install --locked stellar-cli --version 22.8.1` |
-| Node.js | 18 | https://nodejs.org |
-| pnpm | 9 | `npm install -g pnpm@9` |
-| Docker + Compose | 24 / v2 | https://docs.docker.com/get-docker/ |
-| EAS CLI | latest | `npm install -g eas-cli` |
+| Tool             | Minimum version | Install                                               |
+| ---------------- | --------------- | ----------------------------------------------------- |
+| Rust toolchain   | stable          | https://rustup.rs                                     |
+| stellar-cli      | 22.8.1          | `cargo install --locked stellar-cli --version 22.8.1` |
+| Node.js          | 18              | https://nodejs.org                                    |
+| pnpm             | 9               | `npm install -g pnpm@9`                               |
+| Docker + Compose | 24 / v2         | https://docs.docker.com/get-docker/                   |
+| EAS CLI          | latest          | `npm install -g eas-cli`                              |
 
 Verify your stellar-cli version before deploying:
 
@@ -103,7 +103,7 @@ Setting `CONTRACT_ID` skips the build and `stellar contract deploy` steps.
 
 ## Contract Upgrade Procedure
 
-Upgrading the Linkora contract replaces the on-chain WASM without changing the contract ID or state.
+Upgrading the Kovara contract replaces the on-chain WASM without changing the contract ID or state.
 
 ### 1. Build the new WASM
 
@@ -111,7 +111,7 @@ Upgrading the Linkora contract replaces the on-chain WASM without changing the c
 pnpm build:contracts
 ```
 
-The artifact is at `packages/contracts/contracts/linkora-contracts/target/wasm32v1-none/release/linkora_contracts.wasm`.
+The artifact is at `packages/contracts/contracts/Kovara-contracts/target/wasm32v1-none/release/Kovara_contracts.wasm`.
 
 ### 2. Upload the new WASM
 
@@ -119,7 +119,7 @@ The artifact is at `packages/contracts/contracts/linkora-contracts/target/wasm32
 stellar contract upload \
   --network testnet \
   --source-account <DEPLOYER_ALIAS> \
-  --wasm packages/contracts/contracts/linkora-contracts/target/wasm32v1-none/release/linkora_contracts.wasm
+  --wasm packages/contracts/contracts/Kovara-contracts/target/wasm32v1-none/release/Kovara_contracts.wasm
 ```
 
 Note the printed `wasm_hash`.
@@ -168,7 +168,7 @@ Edit `.env.indexer`:
 CONTRACT_ID=CABC...XYZ
 RPC_URL=https://soroban-testnet.stellar.org
 NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-DATABASE_URL=postgres://linkora:linkora@db:5432/linkora_index
+DATABASE_URL=postgres://Kovara:Kovara@db:5432/Kovara_index
 POLL_INTERVAL_MS=5000
 BATCH_SIZE=100
 API_PORT=3001
@@ -235,18 +235,18 @@ Point your reverse proxy at port `3000`.
 
 ### Required environment variables
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_CONTRACT_ID` | Deployed Linkora contract address |
-| `NEXT_PUBLIC_RPC_URL` | Soroban RPC endpoint |
-| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | Stellar network passphrase |
-| `NEXT_PUBLIC_INDEXER_URL` | Base URL of the indexer REST API |
+| Variable                         | Description                      |
+| -------------------------------- | -------------------------------- |
+| `NEXT_PUBLIC_CONTRACT_ID`        | Deployed Kovara contract address |
+| `NEXT_PUBLIC_RPC_URL`            | Soroban RPC endpoint             |
+| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | Stellar network passphrase       |
+| `NEXT_PUBLIC_INDEXER_URL`        | Base URL of the indexer REST API |
 
 ---
 
 ## Mobile App Release
 
-The Linkora mobile app uses [EAS Build](https://docs.expo.dev/build/introduction/) for cloud-based native builds and [EAS Submit](https://docs.expo.dev/submit/introduction/) for store submission.
+The Kovara mobile app uses [EAS Build](https://docs.expo.dev/build/introduction/) for cloud-based native builds and [EAS Submit](https://docs.expo.dev/submit/introduction/) for store submission.
 
 > See [docs/mobile/DEVELOPER_GUIDE.md](mobile/DEVELOPER_GUIDE.md) for local development setup.
 
@@ -304,39 +304,39 @@ eas env:create --scope project --name RPC_URL     --value https://soroban-testne
 
 ### Contract deployment script (`scripts/deploy_testnet.sh`)
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `ADMIN_SECRET` | yes | — | Secret key (`S...`) of the deployer / admin account |
-| `TREASURY_ADDRESS` | yes | — | Public address (`G...`) that receives protocol fees |
-| `FEE_BPS` | no | `0` | Protocol fee in basis points (0–10000) |
-| `NETWORK` | no | `testnet` | Stellar network (`testnet` or `mainnet`) |
-| `CONTRACT_ID` | no | — | If set, skip deploy and use this existing contract ID |
+| Variable           | Required | Default   | Description                                           |
+| ------------------ | -------- | --------- | ----------------------------------------------------- |
+| `ADMIN_SECRET`     | yes      | —         | Secret key (`S...`) of the deployer / admin account   |
+| `TREASURY_ADDRESS` | yes      | —         | Public address (`G...`) that receives protocol fees   |
+| `FEE_BPS`          | no       | `0`       | Protocol fee in basis points (0–10000)                |
+| `NETWORK`          | no       | `testnet` | Stellar network (`testnet` or `mainnet`)              |
+| `CONTRACT_ID`      | no       | —         | If set, skip deploy and use this existing contract ID |
 
 ### Indexer service
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `CONTRACT_ID` | yes | — | Deployed Linkora contract address |
-| `RPC_URL` | yes | — | Soroban RPC endpoint URL |
-| `NETWORK_PASSPHRASE` | yes | — | Stellar network passphrase |
-| `DATABASE_URL` | yes | — | PostgreSQL connection string |
-| `POLL_INTERVAL_MS` | no | `5000` | Polling interval in milliseconds |
-| `BATCH_SIZE` | no | `100` | Ledgers fetched per polling cycle |
-| `API_PORT` | no | `3001` | Port the REST API listens on |
+| Variable             | Required | Default | Description                       |
+| -------------------- | -------- | ------- | --------------------------------- |
+| `CONTRACT_ID`        | yes      | —       | Deployed Kovara contract address  |
+| `RPC_URL`            | yes      | —       | Soroban RPC endpoint URL          |
+| `NETWORK_PASSPHRASE` | yes      | —       | Stellar network passphrase        |
+| `DATABASE_URL`       | yes      | —       | PostgreSQL connection string      |
+| `POLL_INTERVAL_MS`   | no       | `5000`  | Polling interval in milliseconds  |
+| `BATCH_SIZE`         | no       | `100`   | Ledgers fetched per polling cycle |
+| `API_PORT`           | no       | `3001`  | Port the REST API listens on      |
 
 ### Web app (`apps/web`)
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_CONTRACT_ID` | yes | Deployed Linkora contract address |
-| `NEXT_PUBLIC_RPC_URL` | yes | Soroban RPC endpoint URL |
-| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | yes | Stellar network passphrase |
-| `NEXT_PUBLIC_INDEXER_URL` | yes | Base URL of the indexer REST API |
+| Variable                         | Required | Description                      |
+| -------------------------------- | -------- | -------------------------------- |
+| `NEXT_PUBLIC_CONTRACT_ID`        | yes      | Deployed Kovara contract address |
+| `NEXT_PUBLIC_RPC_URL`            | yes      | Soroban RPC endpoint URL         |
+| `NEXT_PUBLIC_NETWORK_PASSPHRASE` | yes      | Stellar network passphrase       |
+| `NEXT_PUBLIC_INDEXER_URL`        | yes      | Base URL of the indexer REST API |
 
 ### Mobile app (`apps/mobile`)
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `EXPO_PUBLIC_CONTRACT_ID` | yes | Deployed Linkora contract address |
-| `EXPO_PUBLIC_RPC_URL` | yes | Soroban RPC endpoint URL |
-| `EXPO_PUBLIC_NETWORK_PASSPHRASE` | yes | Stellar network passphrase |
+| Variable                         | Required | Description                      |
+| -------------------------------- | -------- | -------------------------------- |
+| `EXPO_PUBLIC_CONTRACT_ID`        | yes      | Deployed Kovara contract address |
+| `EXPO_PUBLIC_RPC_URL`            | yes      | Soroban RPC endpoint URL         |
+| `EXPO_PUBLIC_NETWORK_PASSPHRASE` | yes      | Stellar network passphrase       |

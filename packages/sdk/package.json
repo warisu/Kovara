@@ -1,22 +1,22 @@
 {
-  "name": "linkora-sdk",
+  "name": "Kovara-sdk",
   "version": "0.1.0",
-  "description": "Typed TypeScript client for LinkoraContract on Stellar",
-  "homepage": "https://github.com/Epta-Node/Linkora-social#readme",
+  "description": "Typed TypeScript client for KovaraContract on Stellar",
+  "homepage": "https://github.com/Epta-Node/Kovara#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Epta-Node/Linkora-social.git",
+    "url": "git+https://github.com/Epta-Node/Kovara.git",
     "directory": "packages/sdk"
   },
   "bugs": {
-    "url": "https://github.com/Epta-Node/Linkora-social/issues"
+    "url": "https://github.com/Epta-Node/Kovara/issues"
   },
   "license": "Apache-2.0",
-  "author": "Linkora Contributors",
+  "author": "Kovara Contributors",
   "keywords": [
     "stellar",
     "soroban",
-    "linkora",
+    "Kovara",
     "sdk",
     "typescript",
     "client"

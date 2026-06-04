@@ -1,15 +1,17 @@
-import { LinkoraClient } from "../client";
+import { KovaraClient } from "../client";
 import { Keypair, Networks } from "@stellar/stellar-sdk";
 
 describe("SDK E2E Tests against Stellar Testnet", () => {
-  let client: LinkoraClient;
+  let client: KovaraClient;
   let testKeypair: Keypair;
   let testAddress: string;
 
   beforeAll(() => {
     // Initialize client with Testnet configuration
-    client = new LinkoraClient({
-      contractId: process.env.LINKORA_CONTRACT_ID || "CDLDVFKHEZ2RVB3NG4UQA4VPD3TSHV6XMHXMHP2BSGCJ2IIWVTOHGDSG",
+    client = new KovaraClient({
+      contractId:
+        process.env.Kovara_CONTRACT_ID ||
+        "CDLDVFKHEZ2RVB3NG4UQA4VPD3TSHV6XMHXMHP2BSGCJ2IIWVTOHGDSG",
       rpcUrl: "https://soroban-testnet.stellar.org",
       networkPassphrase: Networks.TESTNET,
     });
@@ -37,7 +39,7 @@ describe("SDK E2E Tests against Stellar Testnet", () => {
 
       // Get profile and verify
       const profile = await client.getProfile(testAddress);
-      
+
       expect(profile).toBeDefined();
       expect(profile?.username).toBe(username);
       expect(profile?.address).toBe(testAddress);
@@ -60,7 +62,7 @@ describe("SDK E2E Tests against Stellar Testnet", () => {
 
       // Get post and verify
       const post = await client.getPost(result.postId);
-      
+
       expect(post).toBeDefined();
       expect(post?.content).toBe(content);
       expect(post?.author).toBe(testAddress);

@@ -1,5 +1,5 @@
 /**
- * Input validation and sanitisation utilities for Linkora web forms.
+ * Input validation and sanitisation utilities for Kovara web forms.
  * All validation is pure (no side-effects) so it can be used in both
  * client components and server actions.
  */
@@ -23,10 +23,10 @@ const USERNAME_RE = /^[a-zA-Z0-9_]+$/;
  */
 export function sanitisePostContent(raw: string): string {
   return raw
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<[^>]+>/g, '')   // strip all remaining HTML tags
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '') // strip inline event handlers
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<[^>]+>/g, "") // strip all remaining HTML tags
+    .replace(/javascript:/gi, "")
+    .replace(/on\w+\s*=/gi, "") // strip inline event handlers
     .trim();
 }
 
@@ -39,7 +39,7 @@ export interface ValidationResult {
 
 export function validatePostContent(value: string): ValidationResult {
   const sanitised = sanitisePostContent(value);
-  if (!sanitised) return { valid: false, error: 'Post content cannot be empty.' };
+  if (!sanitised) return { valid: false, error: "Post content cannot be empty." };
   if (sanitised.length > POST_MAX_CHARS)
     return {
       valid: false,
@@ -50,39 +50,40 @@ export function validatePostContent(value: string): ValidationResult {
 
 export function validateUsername(value: string): ValidationResult {
   const trimmed = value.trim();
-  if (!trimmed) return { valid: false, error: 'Username is required.' };
+  if (!trimmed) return { valid: false, error: "Username is required." };
   if (trimmed.length < USERNAME_MIN)
     return { valid: false, error: `Username must be at least ${USERNAME_MIN} characters.` };
   if (trimmed.length > USERNAME_MAX)
     return { valid: false, error: `Username must be ${USERNAME_MAX} characters or fewer.` };
   if (!USERNAME_RE.test(trimmed))
-    return { valid: false, error: 'Username may only contain letters, numbers, and underscores.' };
+    return { valid: false, error: "Username may only contain letters, numbers, and underscores." };
   return { valid: true };
 }
 
 export function validateStellarAddress(value: string): ValidationResult {
   const trimmed = value.trim();
-  if (!trimmed) return { valid: false, error: 'Stellar address is required.' };
+  if (!trimmed) return { valid: false, error: "Stellar address is required." };
   if (!STELLAR_ADDRESS_RE.test(trimmed))
-    return { valid: false, error: 'Enter a valid Stellar address (starts with G or C, 56 characters).' };
+    return {
+      valid: false,
+      error: "Enter a valid Stellar address (starts with G or C, 56 characters).",
+    };
   return { valid: true };
 }
 
 export function validateAmount(value: string): ValidationResult {
   const trimmed = value.trim();
-  if (!trimmed) return { valid: false, error: 'Amount is required.' };
+  if (!trimmed) return { valid: false, error: "Amount is required." };
   const num = Number(trimmed);
-  if (isNaN(num) || trimmed === '')
-    return { valid: false, error: 'Amount must be a number.' };
-  if (num <= 0)
-    return { valid: false, error: 'Amount must be greater than zero.' };
+  if (isNaN(num) || trimmed === "") return { valid: false, error: "Amount must be a number." };
+  if (num <= 0) return { valid: false, error: "Amount must be greater than zero." };
   return { valid: true };
 }
 
 export function validateSearchQuery(value: string): ValidationResult {
   const trimmed = value.trim();
-  if (!trimmed) return { valid: false, error: 'Please enter a search term.' };
+  if (!trimmed) return { valid: false, error: "Please enter a search term." };
   if (trimmed.length > 200)
-    return { valid: false, error: 'Search query must be 200 characters or fewer.' };
+    return { valid: false, error: "Search query must be 200 characters or fewer." };
   return { valid: true };
 }

@@ -2,7 +2,7 @@
 
 This directory contains integration tests that run against a local Stellar sandbox with real transaction signing via `stellar-cli`.
 
-Unlike unit tests in `packages/contracts/contracts/linkora-contracts/src/test.rs`, these tests do **not** use `Env::default()` or `mock_all_auths()`.
+Unlike unit tests in `packages/contracts/contracts/Kovara-contracts/src/test.rs`, these tests do **not** use `Env::default()` or `mock_all_auths()`.
 
 ## Coverage
 
@@ -44,7 +44,7 @@ The script will:
 
 1. Start a local sandbox container.
 2. Generate/fund test identities.
-3. Build and deploy `linkora-contracts` wasm.
+3. Build and deploy `Kovara-contracts` wasm.
 4. Deploy a token contract for native asset interactions.
 5. Execute signed invocations for profile/follow/post/tip/pool flows.
 6. Assert expected state from contract view calls.
