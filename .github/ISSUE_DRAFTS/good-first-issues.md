@@ -1,4 +1,4 @@
-# Good First Issue Drafts
+<!-- # Good First Issue Drafts
 
 These drafts are scoped for new contributors while still moving Kovara forward. Each issue should include `good first issue` plus the listed labels. Create any missing labels from the label reference at the bottom.
 
@@ -290,4 +290,4 @@ Use these labels if they do not already exist in GitHub:
 | `bug`                   | `d73a4a` | Fixes incorrect or unsafe behavior                    |
 | `security`              | `b60205` | Security or safety hardening                          |
 | `developer experience`  | `cfd3d7` | Improves contributor workflow or local setup          |
-| `maintainer experience` | `bfdadc` | Improves project maintenance workflow                 |
+| `maintainer experience` | `bfdadc` | Improves project maintenance workflow                 | -->

@@ -1,4 +1,4 @@
----
+<!-- ---
 name: Bug report
 about: Report a reproducible problem in Kovara Social
 title: "[Bug]: "
@@ -28,4 +28,4 @@ What actually happened?
 - Browser / client:
 - OS:
 - Repository version / commit:
-- Relevant network or contract configuration:
+- Relevant network or contract configuration: -->
