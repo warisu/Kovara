@@ -47,6 +47,58 @@ contracts/
 
 ---
 
+## Storage Layout
+
+The contract uses three Soroban storage buckets:
+
+- `instance` for small protocol-wide counters and configuration
+- `persistent` for user, post, pool, and relationship state
+- `temporary` for short-lived cooldown tracking
+
+### Instance Storage
+
+| Key | Type | Purpose |
+|---|---|---|
+| `INIT` | `bool` | Marks the contract as initialized |
+| `ADMIN` | `Address` | Protocol admin address |
+| `TREASURY` | `Address` | Protocol treasury address for tip fees |
+| `FEE_BPS` | `u32` | Protocol tip fee in basis points |
+| `POST_CT` | `u64` | Total posts ever created |
+| `PROF_CT` | `u64` | Total profiles ever created |
+| `TIP_CD_W` | `u32` | Tip cooldown window in ledgers |
+
+### Persistent Storage
+
+All persistent application state is keyed through the `StorageKey` enum:
+
+| Key | Value Type | Purpose |
+|---|---|---|
+| `Post(u64)` | `Post` | Post body and metadata by post ID |
+| `Profile(Address)` | `Profile` | Profile data by user address |
+| `Following(Address)` | `Vec<Address>` | Accounts followed by a user |
+| `Followers(Address)` | `Vec<Address>` | Accounts following a user |
+| `Pool(Symbol)` | `Pool` | Community pool state by pool ID |
+| `Like(u64, Address)` | `bool` | Like marker for a post/user pair |
+| `AuthorPosts(Address)` | `Vec<u64>` | Post IDs created by an author |
+| `Blocks(Address)` | `Map<Address, ()>` | Block list for a blocker address |
+| `UsernameIndex(String)` | `Address` | Reverse index from username to owner |
+
+### Temporary Storage
+
+| Key | Value Type | Purpose |
+|---|---|---|
+| `TipCooldown(u64, Address)` | `u32` | Last ledger sequence number for a tipper/post pair |
+
+### Data Shapes
+
+The main persisted structs are:
+
+- `Post { id, author, content, tip_total, timestamp, like_count }`
+- `Profile { address, username, creator_token }`
+- `Pool { token, balance, admins, threshold }`
+- `Proposal { id, pool_id, proposer, amount, recipient, signers, status }`
+
+These values are stored directly under the keys above and are extended with TTL bumps on reads or mutations where applicable.
 ## Kovara Social Contract API Reference
 
 The current Soroban implementation lives in `contracts/linkora-contracts/src/lib.rs` as `KovaraContract`. The implicit Soroban `Env` parameter is omitted from the inputs below.
