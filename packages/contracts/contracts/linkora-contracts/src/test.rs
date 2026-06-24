@@ -1608,6 +1608,38 @@ fn test_get_followers_offset_beyond_list_length_returns_empty() {
 }
 
 #[test]
+fn test_get_following_empty_list_offset_zero_returns_empty() {
+    // If the user has never followed anyone, get_following(., offset=0, .)
+    // must return an empty vec (and must not bump/create storage keys).
+    let env = Env::default();
+    env.mock_all_auths();
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
+
+    let alice = Address::generate(&env);
+
+    let page = client.get_following(&alice, &0, &10);
+    assert_eq!(
+        page.len(),
+        0,
+        "empty following list with offset=0 must return empty vec"
+    );
+
+    // Following(alice) key must not exist if the user never followed anyone.
+    let contract_addr = client.address.clone();
+    let following_exists = env.as_contract(&contract_addr, || {
+        env.storage()
+            .persistent()
+            .has(&StorageKey::Following(alice.clone()))
+    });
+    assert!(
+        !following_exists,
+        "get_following must not create or bump Following(alice) storage"
+    );
+}
+
+
+#[test]
 fn test_get_followers_limit_50_returns_at_most_50() {
     // limit of 50 must return at most 50 results
     let env = Env::default();
