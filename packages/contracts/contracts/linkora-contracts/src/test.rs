@@ -2884,3 +2884,119 @@ fn test_pool_deposit_negative_rejected() {
     client.pool_deposit(&other_user, &pool_id, &token, &-50);
 }
 
+
+// ── Issue #89: get_posts_by_author — pagination & empty result handling ────────
+
+#[test]
+fn test_get_posts_by_author_empty_no_posts() {
+    // Author with no posts at all should return an empty vec immediately.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    let result = client.get_posts_by_author(&author, &0, &10);
+    assert_eq!(result.len(), 0);
+}
+
+#[test]
+fn test_get_posts_by_author_single_post_first_page() {
+    // Exactly one post; page 0 should return it; page 1 should be empty.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    let id = client.create_post(&author, &String::from_str(&env, "hello"));
+
+    let page0 = client.get_posts_by_author(&author, &0, &10);
+    assert_eq!(page0.len(), 1);
+    assert_eq!(page0.get(0).unwrap(), id);
+
+    let page1 = client.get_posts_by_author(&author, &1, &10);
+    assert_eq!(page1.len(), 0);
+}
+
+#[test]
+fn test_get_posts_by_author_partial_last_page() {
+    // 7 posts, page size 5: second page should have exactly 2 entries.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    for i in 0..7u32 {
+        let content = String::from_str(&env, if i == 0 { "a" } else if i == 1 { "b" } else if i == 2 { "c" } else if i == 3 { "d" } else if i == 4 { "e" } else if i == 5 { "f" } else { "g" });
+        client.create_post(&author, &content);
+    }
+
+    let page0 = client.get_posts_by_author(&author, &0, &5);
+    assert_eq!(page0.len(), 5);
+
+    let page1 = client.get_posts_by_author(&author, &5, &5);
+    assert_eq!(page1.len(), 2);
+}
+
+#[test]
+fn test_get_posts_by_author_offset_equals_count_returns_empty() {
+    // offset == total posts → empty result, no panic.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    client.create_post(&author, &String::from_str(&env, "only post"));
+
+    let result = client.get_posts_by_author(&author, &1, &10);
+    assert_eq!(result.len(), 0);
+}
+
+#[test]
+fn test_get_posts_by_author_limit_one_iterates_all_posts() {
+    // Fetch 3 posts one at a time with limit=1.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    let id0 = client.create_post(&author, &String::from_str(&env, "p0"));
+    let id1 = client.create_post(&author, &String::from_str(&env, "p1"));
+    let id2 = client.create_post(&author, &String::from_str(&env, "p2"));
+
+    assert_eq!(client.get_posts_by_author(&author, &0, &1).get(0).unwrap(), id0);
+    assert_eq!(client.get_posts_by_author(&author, &1, &1).get(0).unwrap(), id1);
+    assert_eq!(client.get_posts_by_author(&author, &2, &1).get(0).unwrap(), id2);
+    assert_eq!(client.get_posts_by_author(&author, &3, &1).len(), 0);
+}
+
+#[test]
+fn test_get_posts_by_author_different_authors_isolated() {
+    // Posts from author A must not appear in author B's list.
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author_a = Address::generate(&env);
+    let author_b = Address::generate(&env);
+
+    client.create_post(&author_a, &String::from_str(&env, "author a post"));
+    client.create_post(&author_b, &String::from_str(&env, "author b post"));
+
+    let a_posts = client.get_posts_by_author(&author_a, &0, &10);
+    let b_posts = client.get_posts_by_author(&author_b, &0, &10);
+
+    assert_eq!(a_posts.len(), 1);
+    assert_eq!(b_posts.len(), 1);
+    assert_ne!(a_posts.get(0).unwrap(), b_posts.get(0).unwrap());
+}
+
+#[test]
+#[should_panic(expected = "limit must be between 1 and 50")]
+fn test_get_posts_by_author_zero_limit_panics() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, _, _) = setup_contract(&env);
+
+    let author = Address::generate(&env);
+    client.get_posts_by_author(&author, &0, &0);
+}

@@ -821,8 +821,13 @@ impl KovaraContract {
         Self::bump_temp(&env, &cooldown_key);
 
         let fee_bps = Self::get_fee_bps(env.clone());
-        let fee_amount = (amount * fee_bps as i128) / 10_000;
-        let author_amount = amount - fee_amount;
+        // Use checked arithmetic to prevent silent overflow on pathological inputs.
+        // fee_bps is at most 10_000 (100%), so the multiplication can reach ~i128::MAX.
+        let fee_amount = amount
+            .checked_mul(fee_bps as i128)
+            .expect("fee calculation overflow")
+            / 10_000;
+        let author_amount = amount - fee_amount; // safe: fee_amount ≤ amount
         let token_client = token::Client::new(&env, &token);
 
         if fee_amount > 0 {
@@ -835,7 +840,7 @@ impl KovaraContract {
         }
         token_client.transfer(&tipper, &post.author, &author_amount);
 
-        post.tip_total += amount;
+        post.tip_total = post.tip_total.checked_add(amount).expect("tip_total overflow");
         env.storage().persistent().set(&key, &post);
         Self::bump(&env, &key);
 
@@ -915,7 +920,7 @@ impl KovaraContract {
             env.current_contract_address(),
             &amount,
         );
-        pool.balance += amount;
+        pool.balance = pool.balance.checked_add(amount).expect("pool balance overflow");
         env.storage().persistent().set(&key, &pool);
         Self::bump(&env, &key);
 
@@ -954,7 +959,7 @@ impl KovaraContract {
         }
         assert!(pool.balance >= amount, "low balance");
 
-        pool.balance -= amount;
+        pool.balance = pool.balance.checked_sub(amount).expect("pool balance underflow");
         env.storage().persistent().set(&key, &pool);
         Self::bump(&env, &key);
         token::Client::new(&env, &pool.token).transfer(
