@@ -797,6 +797,14 @@ impl KovaraContract {
             panic!("blocked");
         }
 
+        if let Some(profile) = env
+            .storage()
+            .persistent()
+            .get::<_, Profile>(&StorageKey::Profile(post.author.clone()))
+        {
+            assert!(profile.creator_token == token, "wrong token for tip");
+        }
+
         // Check tip cooldown: one tip per tipper per post per cooldown window.
         let cooldown_key = StorageKey::TipCooldown(post_id, tipper.clone());
         let current_ledger = env.ledger().sequence();
@@ -900,7 +908,10 @@ impl KovaraContract {
         amount: i128,
     ) {
         Self::bump_instance(&env);
-        assert!(amount > 0, "deposit amount must be strictly greater than zero");
+        assert!(
+            amount > 0,
+            "deposit amount must be strictly greater than zero"
+        );
         depositor.require_auth();
         let key = StorageKey::Pool(pool_id.clone());
         let mut pool: Pool = env

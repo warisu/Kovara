@@ -367,6 +367,55 @@ fn test_tip_fee_split() {
 }
 
 #[test]
+#[should_panic(expected = "wrong token for tip")]
+fn test_tip_rejects_mismatched_creator_token() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
+
+    let admin = Address::generate(&env);
+    let treasury = Address::generate(&env);
+    let author = Address::generate(&env);
+    let tipper = Address::generate(&env);
+
+    client.initialize(&admin, &treasury, &250);
+
+    let allowed_token = setup_token(&env, &tipper);
+    let mismatched_token = setup_token(&env, &tipper);
+    client.set_profile(&author, &String::from_str(&env, "alice"), &allowed_token);
+
+    let post_id = client.create_post(&author, &String::from_str(&env, "Creator token test"));
+    client.tip(&tipper, &post_id, &mismatched_token, &1000);
+}
+
+#[test]
+fn test_tip_accepts_matching_creator_token() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let contract_id = env.register(KovaraContract, ());
+    let client = KovaraContractClient::new(&env, &contract_id);
+
+    let admin = Address::generate(&env);
+    let treasury = Address::generate(&env);
+    let author = Address::generate(&env);
+    let tipper = Address::generate(&env);
+
+    client.initialize(&admin, &treasury, &250);
+
+    let creator_token = setup_token(&env, &tipper);
+    client.set_profile(&author, &String::from_str(&env, "alice"), &creator_token);
+
+    let post_id = client.create_post(&author, &String::from_str(&env, "Creator token test"));
+    client.tip(&tipper, &post_id, &creator_token, &1000);
+
+    let post = client.get_post(&post_id).unwrap();
+    assert_eq!(post.tip_total, 1000);
+}
+
+#[test]
 #[should_panic(expected = "blocked")]
 fn test_tip_blocked_by_author() {
     let env = Env::default();
@@ -2883,4 +2932,3 @@ fn test_pool_deposit_negative_rejected() {
     let other_user = Address::generate(&env);
     client.pool_deposit(&other_user, &pool_id, &token, &-50);
 }
-
