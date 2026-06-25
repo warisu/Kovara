@@ -1017,6 +1017,156 @@ fn test_pool_withdraw_negative_amount_rejected() {
 }
 
 #[test]
+#[should_panic(expected = "insufficient signers")]
+fn test_pool_withdraw_zero_signers_when_threshold_positive() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, admin, _) = setup_contract(&env);
+
+    let pool_admin1 = Address::generate(&env);
+    let pool_admin2 = Address::generate(&env);
+    let other_user = Address::generate(&env);
+    let token = setup_token(&env, &pool_admin1);
+    StellarAssetClient::new(&env, &token).mint(&other_user, &1000);
+
+    let pool_id = symbol_short!("pool_zero_signers");
+    client.create_pool(
+        &admin,
+        &pool_id,
+        &token,
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone()],
+        &2,
+    );
+    client.pool_deposit(&other_user, &pool_id, &token, &100);
+
+    // Try to withdraw with 0 signers when threshold is 2
+    client.pool_withdraw(&vec![&env], &pool_id, &50, &other_user);
+}
+
+#[test]
+#[should_panic(expected = "insufficient signers")]
+fn test_pool_withdraw_threshold_3_only_2_signers() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, admin, _) = setup_contract(&env);
+
+    let pool_admin1 = Address::generate(&env);
+    let pool_admin2 = Address::generate(&env);
+    let pool_admin3 = Address::generate(&env);
+    let other_user = Address::generate(&env);
+    let token = setup_token(&env, &pool_admin1);
+    StellarAssetClient::new(&env, &token).mint(&other_user, &1000);
+
+    let pool_id = symbol_short!("pool_threshold_3");
+    client.create_pool(
+        &admin,
+        &pool_id,
+        &token,
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone(), pool_admin3.clone()],
+        &3,
+    );
+    client.pool_deposit(&other_user, &pool_id, &token, &100);
+
+    // Try to withdraw with only 2 signers when threshold is 3
+    client.pool_withdraw(
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone()],
+        &pool_id,
+        &50,
+        &other_user,
+    );
+}
+
+#[test]
+#[should_panic(expected = "insufficient signers")]
+fn test_pool_withdraw_threshold_1_zero_signers() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, admin, _) = setup_contract(&env);
+
+    let pool_admin1 = Address::generate(&env);
+    let other_user = Address::generate(&env);
+    let token = setup_token(&env, &pool_admin1);
+    StellarAssetClient::new(&env, &token).mint(&other_user, &1000);
+
+    let pool_id = symbol_short!("pool_threshold_1");
+    client.create_pool(
+        &admin,
+        &pool_id,
+        &token,
+        &vec![&env, pool_admin1.clone()],
+        &1,
+    );
+    client.pool_deposit(&other_user, &pool_id, &token, &100);
+
+    // Try to withdraw with 0 signers when threshold is 1
+    client.pool_withdraw(&vec![&env], &pool_id, &50, &other_user);
+}
+
+#[test]
+#[should_panic(expected = "insufficient signers")]
+fn test_pool_withdraw_duplicate_signers_count_once() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, admin, _) = setup_contract(&env);
+
+    let pool_admin1 = Address::generate(&env);
+    let pool_admin2 = Address::generate(&env);
+    let other_user = Address::generate(&env);
+    let token = setup_token(&env, &pool_admin1);
+    StellarAssetClient::new(&env, &token).mint(&other_user, &1000);
+
+    let pool_id = symbol_short!("pool_duplicate");
+    client.create_pool(
+        &admin,
+        &pool_id,
+        &token,
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone()],
+        &2,
+    );
+    client.pool_deposit(&other_user, &pool_id, &token, &100);
+
+    // Try to withdraw with duplicate signer - should count as only 1 unique signer
+    client.pool_withdraw(
+        &vec![&env, pool_admin1.clone(), pool_admin1.clone()],
+        &pool_id,
+        &50,
+        &other_user,
+    );
+}
+
+#[test]
+fn test_pool_withdraw_threshold_2_with_2_unique_signers_succeeds() {
+    let env = Env::default();
+    env.mock_all_auths();
+    let (client, admin, _) = setup_contract(&env);
+
+    let pool_admin1 = Address::generate(&env);
+    let pool_admin2 = Address::generate(&env);
+    let other_user = Address::generate(&env);
+    let token = setup_token(&env, &pool_admin1);
+    StellarAssetClient::new(&env, &token).mint(&other_user, &1000);
+
+    let pool_id = symbol_short!("pool_success");
+    client.create_pool(
+        &admin,
+        &pool_id,
+        &token,
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone()],
+        &2,
+    );
+    client.pool_deposit(&other_user, &pool_id, &token, &100);
+
+    // Withdraw with exactly 2 unique signers when threshold is 2 should succeed
+    client.pool_withdraw(
+        &vec![&env, pool_admin1.clone(), pool_admin2.clone()],
+        &pool_id,
+        &50,
+        &other_user,
+    );
+    assert_eq!(client.get_pool(&pool_id).unwrap().balance, 50);
+}
+
+#[test]
 #[should_panic(expected = "wrong token for pool")]
 fn test_pool_deposit_wrong_token_rejected() {
     let env = Env::default();
