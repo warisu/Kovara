@@ -325,6 +325,15 @@ fn validate_username(username: &String) -> Result<(), &'static str> {
     Ok(())
 }
 
+fn validate_creator_token(env: &Env, token: &Address) -> Result<(), &'static str> {
+    if *token == env.current_contract_address() {
+        return Err("creator token cannot be the contract itself");
+    }
+    let token_client = token::Client::new(env, token);
+    token_client.name();
+    Ok(())
+}
+
 fn validate_content(content: &String) -> Result<(), &'static str> {
     let len = content.len();
     if len < MIN_CONTENT_LEN {
@@ -384,6 +393,7 @@ impl KovaraContract {
         Self::bump_instance(&env);
         user.require_auth();
         validate_username(&username).expect("invalid username");
+        validate_creator_token(&env, &creator_token).expect("invalid creator token");
 
         let key = StorageKey::Profile(user.clone());
         let username_index_key = StorageKey::UsernameIndex(username.clone());
@@ -524,9 +534,9 @@ impl KovaraContract {
                 .persistent()
                 .set(&followers_key, &followers_list);
             Self::bump(&env, &followers_key);
-        }
 
-        FollowEvent { follower, followee }.publish(&env);
+            FollowEvent { follower, followee }.publish(&env);
+        }
     }
 
     pub fn unfollow(env: Env, follower: Address, followee: Address) {
@@ -560,9 +570,9 @@ impl KovaraContract {
                     .set(&followers_key, &followers_list);
                 Self::bump(&env, &followers_key);
             }
-        }
 
-        UnfollowEvent { follower, followee }.publish(&env);
+            UnfollowEvent { follower, followee }.publish(&env);
+        }
     }
 
     pub fn get_following(env: Env, user: Address, offset: u32, limit: u32) -> Vec<Address> {
