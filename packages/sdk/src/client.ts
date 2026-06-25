@@ -60,10 +60,15 @@ export interface CreatePostResult extends SubmitResult {
 /**
  * Typed client for all Kovara social contract methods.
  *
- * Write methods accept an optional `Keypair`. When provided the transaction is
- * signed, submitted to the network, and a `SubmitResult` (or `CreatePostResult`)
- * is returned. When omitted the raw base64-XDR envelope is returned instead,
- * preserving the original wallet-agnostic behaviour.
+ * Read methods call simulateTransaction on the Soroban RPC.
+ * Write methods return a base64-encoded XDR transaction envelope
+ * ready to be signed and submitted by the caller.
+ *
+ * This client is wired to the Soroban contract bindings from
+ * packages/contracts/src/index.ts — regenerate that file after
+ * every contract change with:
+ *
+ *   pnpm build:contracts && bash packages/sdk/generate.sh
  */
 export class KovaraClient {
   private contractId: string;
@@ -119,6 +124,8 @@ export class KovaraClient {
 
     return tx.toEnvelope().toXDR("base64");
   }
+
+  // ── Read: Profiles ──────────────────────────────────────────────────────────
 
   /**
    * Signs, submits, and confirms a base64-XDR transaction envelope.
@@ -187,8 +194,22 @@ export class KovaraClient {
   }
 
   /**
+   * Returns a paginated list of post IDs for an author.
+   * offset and limit follow the same rules as the on-chain contract:
+   * limit must be between 1 and 50 (inclusive).
    * Fetches the addresses of users that a specific address is following
    */
+  async getPostsByAuthor(author: string, offset: number, limit: number): Promise<number[]> {
+    const retval = await this.simulateCall(
+      "get_posts_by_author",
+      scvAddress(author),
+      nativeToScVal(offset, { type: "u32" }),
+      nativeToScVal(limit, { type: "u32" })
+    );
+    if (!retval) return [];
+    return scValToNative(retval) as number[];
+  }
+
   async getFollowing(address: string): Promise<string[]> {
     const retval = await this.simulateCall("get_following", scvAddress(address));
     if (!retval) return [];
@@ -269,6 +290,37 @@ export class KovaraClient {
     return Number(scValToNative(retval));
   }
 
+  // ── Write: returns base64 XDR envelope for caller to sign + submit ──────────
+
+  createPost(author: string, content: string): string {
+    return this.buildTx("create_post", scvAddress(author), scvString(content));
+  }
+
+  deletePost(author: string, postId: number): string {
+    return this.buildTx("delete_post", scvAddress(author), scvU64(postId));
+  }
+
+  follow(follower: string, followed: string): string {
+    return this.buildTx("follow", scvAddress(follower), scvAddress(followed));
+  }
+
+  unfollow(follower: string, followed: string): string {
+    return this.buildTx("unfollow", scvAddress(follower), scvAddress(followed));
+  }
+
+  like(liker: string, postId: number): string {
+    return this.buildTx("like", scvAddress(liker), scvU64(postId));
+  }
+
+  unlike(liker: string, postId: number): string {
+    return this.buildTx("unlike", scvAddress(liker), scvU64(postId));
+  }
+
+  tip(sender: string, postId: number, amount: number | bigint): string {
+    return this.buildTx("tip", scvAddress(sender), scvU64(postId), scvI128(amount));
+  }
+
+  createPool(admin: string, token: string, initialAdmins: string[], threshold: number): string {
   // ─── write methods ────────────────────────────────────────────────────────
   //
   // Each write method has two overloads:
@@ -489,6 +541,7 @@ export class KovaraClient {
       scvAddress(keypairOrAdmin as string),
       scvString(adminOrToken),
       nativeToScVal(
+        initialAdmins.map((a) => scvAddress(a)),
         (tokenOrAdmins as string[]).map((a) => scvAddress(a)),
         { type: "vec" }
       ),

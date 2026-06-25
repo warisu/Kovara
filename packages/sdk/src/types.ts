@@ -1,5 +1,6 @@
 /**
- * Types representing the data structures returned by the smart contracts
+ * Types representing the data structures returned by the smart contract.
+ * These mirror the #[contracttype] structs defined in the Rust contract (lib.rs).
  */
 
 export interface Profile {
